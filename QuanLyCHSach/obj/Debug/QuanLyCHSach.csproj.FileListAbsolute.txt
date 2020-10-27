@@ -1,0 +1,12 @@
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\bin\Debug\QuanLyCHSach.exe.config
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\bin\Debug\QuanLyCHSach.exe
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\bin\Debug\QuanLyCHSach.pdb
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.csprojAssemblyReference.cache
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.Properties.Resources.resources
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.View.fAdmin.resources
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.View.fDangNhap.resources
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.View.fQuanLy.resources
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.csproj.GenerateResource.cache
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.csproj.CoreCompileInputs.cache
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.exe
+C:\Users\Long\Documents\Projects\QuanLyCHSach\QuanLyCHSach\obj\Debug\QuanLyCHSach.pdb
