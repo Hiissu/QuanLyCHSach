@@ -54,6 +54,10 @@
             this.label15 = new System.Windows.Forms.Label();
             this.dtgvNhanVien = new System.Windows.Forms.DataGridView();
             this.tpTaikhoan = new System.Windows.Forms.TabPage();
+            this.tbIdTaiKhoan = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.cbNhanVien = new System.Windows.Forms.ComboBox();
             this.cbLoaiTaiKhoan = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
@@ -121,10 +125,7 @@
             this.btSua = new System.Windows.Forms.Button();
             this.dtgvSach = new System.Windows.Forms.DataGridView();
             this.tcAdmin = new System.Windows.Forms.TabControl();
-            this.cbNhanVien = new System.Windows.Forms.ComboBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.tbIdTaiKhoan = new System.Windows.Forms.TextBox();
+            this.cbTimKiem = new System.Windows.Forms.ComboBox();
             this.tpDoanhthu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.tpNhanvien.SuspendLayout();
@@ -160,6 +161,7 @@
             // 
             this.dataGridView3.AllowUserToAddRows = false;
             this.dataGridView3.AllowUserToDeleteRows = false;
+            this.dataGridView3.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Location = new System.Drawing.Point(66, 161);
             this.dataGridView3.Margin = new System.Windows.Forms.Padding(2);
@@ -356,6 +358,7 @@
             // 
             // cbChucVu
             // 
+            this.cbChucVu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChucVu.FormattingEnabled = true;
             this.cbChucVu.Location = new System.Drawing.Point(191, 111);
             this.cbChucVu.Name = "cbChucVu";
@@ -393,6 +396,7 @@
             // 
             this.dtgvNhanVien.AllowUserToAddRows = false;
             this.dtgvNhanVien.AllowUserToDeleteRows = false;
+            this.dtgvNhanVien.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtgvNhanVien.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvNhanVien.Location = new System.Drawing.Point(85, 239);
             this.dtgvNhanVien.Margin = new System.Windows.Forms.Padding(2);
@@ -433,8 +437,49 @@
             this.tpTaikhoan.Text = "Tài khoản";
             this.tpTaikhoan.UseVisualStyleBackColor = true;
             // 
+            // tbIdTaiKhoan
+            // 
+            this.tbIdTaiKhoan.Location = new System.Drawing.Point(209, 36);
+            this.tbIdTaiKhoan.Margin = new System.Windows.Forms.Padding(2);
+            this.tbIdTaiKhoan.Name = "tbIdTaiKhoan";
+            this.tbIdTaiKhoan.ReadOnly = true;
+            this.tbIdTaiKhoan.Size = new System.Drawing.Size(278, 24);
+            this.tbIdTaiKhoan.TabIndex = 138;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(107, 39);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(93, 18);
+            this.label31.TabIndex = 137;
+            this.label31.Text = "Mã tài khoản";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(131, 138);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(73, 18);
+            this.label30.TabIndex = 136;
+            this.label30.Text = "Nhân viên";
+            // 
+            // cbNhanVien
+            // 
+            this.cbNhanVien.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNhanVien.FormattingEnabled = true;
+            this.cbNhanVien.Items.AddRange(new object[] {
+            "Nhân viên",
+            "Quản lý"});
+            this.cbNhanVien.Location = new System.Drawing.Point(209, 135);
+            this.cbNhanVien.Margin = new System.Windows.Forms.Padding(5);
+            this.cbNhanVien.Name = "cbNhanVien";
+            this.cbNhanVien.Size = new System.Drawing.Size(749, 26);
+            this.cbNhanVien.TabIndex = 135;
+            // 
             // cbLoaiTaiKhoan
             // 
+            this.cbLoaiTaiKhoan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLoaiTaiKhoan.FormattingEnabled = true;
             this.cbLoaiTaiKhoan.Location = new System.Drawing.Point(680, 102);
             this.cbLoaiTaiKhoan.Margin = new System.Windows.Forms.Padding(5);
@@ -558,6 +603,7 @@
             // 
             this.dtgvTaiKhoan.AllowUserToAddRows = false;
             this.dtgvTaiKhoan.AllowUserToDeleteRows = false;
+            this.dtgvTaiKhoan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtgvTaiKhoan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvTaiKhoan.Location = new System.Drawing.Point(87, 226);
             this.dtgvTaiKhoan.Margin = new System.Windows.Forms.Padding(2);
@@ -714,6 +760,7 @@
             // 
             this.dtgvNhaXuatBan.AllowUserToAddRows = false;
             this.dtgvNhaXuatBan.AllowUserToDeleteRows = false;
+            this.dtgvNhaXuatBan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtgvNhaXuatBan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvNhaXuatBan.Location = new System.Drawing.Point(118, 206);
             this.dtgvNhaXuatBan.Margin = new System.Windows.Forms.Padding(2);
@@ -859,6 +906,7 @@
             // 
             this.dtgvTheLoai.AllowUserToAddRows = false;
             this.dtgvTheLoai.AllowUserToDeleteRows = false;
+            this.dtgvTheLoai.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtgvTheLoai.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvTheLoai.Location = new System.Drawing.Point(118, 206);
             this.dtgvTheLoai.Margin = new System.Windows.Forms.Padding(2);
@@ -873,6 +921,7 @@
             // 
             // tpSach
             // 
+            this.tpSach.Controls.Add(this.cbTimKiem);
             this.tpSach.Controls.Add(this.cbNhaXuatBan);
             this.tpSach.Controls.Add(this.cbTheLoai);
             this.tpSach.Controls.Add(this.tbTacGia);
@@ -907,6 +956,7 @@
             // 
             // cbNhaXuatBan
             // 
+            this.cbNhaXuatBan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbNhaXuatBan.FormattingEnabled = true;
             this.cbNhaXuatBan.Location = new System.Drawing.Point(636, 74);
             this.cbNhaXuatBan.Name = "cbNhaXuatBan";
@@ -915,6 +965,7 @@
             // 
             // cbTheLoai
             // 
+            this.cbTheLoai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTheLoai.FormattingEnabled = true;
             this.cbTheLoai.Location = new System.Drawing.Point(100, 81);
             this.cbTheLoai.Name = "cbTheLoai";
@@ -933,12 +984,12 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(549, 175);
+            this.label28.Location = new System.Drawing.Point(328, 172);
             this.label28.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(79, 18);
+            this.label28.Size = new System.Drawing.Size(102, 18);
             this.label28.TabIndex = 87;
-            this.label28.Text = "Tên Sách: ";
+            this.label28.Text = "Tìm kiếm theo";
             // 
             // btTimkiem
             // 
@@ -949,6 +1000,7 @@
             this.btTimkiem.TabIndex = 86;
             this.btTimkiem.Text = "Tìm kiếm";
             this.btTimkiem.UseVisualStyleBackColor = true;
+            this.btTimkiem.Click += new System.EventHandler(this.btTimkiem_Click);
             // 
             // tbTimKiem
             // 
@@ -1168,44 +1220,14 @@
             this.tcAdmin.Size = new System.Drawing.Size(1247, 723);
             this.tcAdmin.TabIndex = 0;
             // 
-            // cbNhanVien
+            // cbTimKiem
             // 
-            this.cbNhanVien.FormattingEnabled = true;
-            this.cbNhanVien.Items.AddRange(new object[] {
-            "Nhân viên",
-            "Quản lý"});
-            this.cbNhanVien.Location = new System.Drawing.Point(209, 135);
-            this.cbNhanVien.Margin = new System.Windows.Forms.Padding(5);
-            this.cbNhanVien.Name = "cbNhanVien";
-            this.cbNhanVien.Size = new System.Drawing.Size(749, 26);
-            this.cbNhanVien.TabIndex = 135;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(131, 138);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(73, 18);
-            this.label30.TabIndex = 136;
-            this.label30.Text = "Nhân viên";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(107, 39);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(93, 18);
-            this.label31.TabIndex = 137;
-            this.label31.Text = "Mã tài khoản";
-            // 
-            // tbIdTaiKhoan
-            // 
-            this.tbIdTaiKhoan.Location = new System.Drawing.Point(209, 36);
-            this.tbIdTaiKhoan.Margin = new System.Windows.Forms.Padding(2);
-            this.tbIdTaiKhoan.Name = "tbIdTaiKhoan";
-            this.tbIdTaiKhoan.ReadOnly = true;
-            this.tbIdTaiKhoan.Size = new System.Drawing.Size(278, 24);
-            this.tbIdTaiKhoan.TabIndex = 138;
+            this.cbTimKiem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTimKiem.FormattingEnabled = true;
+            this.cbTimKiem.Location = new System.Drawing.Point(438, 169);
+            this.cbTimKiem.Name = "cbTimKiem";
+            this.cbTimKiem.Size = new System.Drawing.Size(191, 26);
+            this.cbTimKiem.TabIndex = 138;
             // 
             // fAdmin
             // 
@@ -1339,5 +1361,6 @@
         private System.Windows.Forms.ComboBox cbNhanVien;
         private System.Windows.Forms.TextBox tbIdTaiKhoan;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.ComboBox cbTimKiem;
     }
 }

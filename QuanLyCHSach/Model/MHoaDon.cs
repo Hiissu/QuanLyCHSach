@@ -11,7 +11,6 @@ namespace QuanLyCHSach.Model
         public int Id { get; set; }
         public string Ngaylap { get; set; }
         public int Id_nhanvien { get; set; }
-        public int Tennhanvien { get; set; }
-        public int Id_cthd { get; set; }
+        public string Tennhanvien { get; set; }
     }
 }

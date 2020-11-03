@@ -35,7 +35,7 @@ namespace QuanLyCHSach.Controller
         public void ThemCTHD(MCTHD obj)
         {
             string truyvan = $"INSERT INTO [dbo].[CTHD]([id_hoadon], [id_sach], [soluong]) " +
-                            $"VALUES ('{obj.Id_hoadon}', '{obj.Id_sach}', '{obj.Soluong}') ";
+                            $"VALUES (IDENT_CURRENT('HoaDon'), '{obj.Id_sach}', '{obj.Soluong}') ";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -45,39 +45,39 @@ namespace QuanLyCHSach.Controller
         }
 
 
-        public void CapNhatCTHD(MCTHD obj, object idCTHD)
-        {
-            string truyvan = $"UPDATE [dbo].[CTHD] " +
-                $"SET [id_hoadon] = '{obj.Id_hoadon}', [id_sach] = '{obj.Id_sach}',  [soluong] = '{obj.Soluong}', " +
-                $"WHERE [id] = '{idCTHD}'";
+        //public void CapNhatCTHD(MCTHD obj, object idCTHD)
+        //{
+        //    string truyvan = $"UPDATE [dbo].[CTHD] " +
+        //        $"SET [id_hoadon] = '{obj.Id_hoadon}', [id_sach] = '{obj.Id_sach}',  [soluong] = '{obj.Soluong}', " +
+        //        $"WHERE [id] = '{idCTHD}'";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.CommandType = CommandType.Text;
+        //    cmd.CommandText = truyvan;
 
-            base.GhiDuLieu(cmd);
-        }
+        //    base.GhiDuLieu(cmd);
+        //}
 
-        public void XoaCTHD(int id)
-        {
-            string truyvan = $"DELETE FROM [dbo].[CTHD] WHERE [id] = '{id}'";
+        //public void XoaCTHD(int id)
+        //{
+        //    string truyvan = $"DELETE FROM [dbo].[CTHD] WHERE [id] = '{id}'";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.CommandType = CommandType.Text;
+        //    cmd.CommandText = truyvan;
 
-            base.GhiDuLieu(cmd);
-        }
+        //    base.GhiDuLieu(cmd);
+        //}
 
-        public void XoaTatCaCTHD()
-        {
-            string truyvan = "DELETE FROM [dbo].[CTHD]";
+        //public void XoaTatCaCTHD()
+        //{
+        //    string truyvan = "DELETE FROM [dbo].[CTHD]";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.CommandType = CommandType.Text;
+        //    cmd.CommandText = truyvan;
 
-            base.GhiDuLieu(cmd);
-        }
+        //    base.GhiDuLieu(cmd);
+        //}
     }
 }

@@ -35,6 +35,24 @@ namespace QuanLyCHSach.View
             LoadDuLieuTaiKhoan();
             LoadDuLieuNhanVien();
 
+
+            Dictionary<string, string> dicTimKiem = new Dictionary<string, string>();
+            dicTimKiem.Add("s.ten", "Tên sách");
+            dicTimKiem.Add("tl.ten", "Thể loại");
+            dicTimKiem.Add("s.tacgia", "Tác giả");
+            dicTimKiem.Add("nxb.ten", "Nhà xuất bản");
+
+            cbTimKiem.DataSource = new BindingSource(dicTimKiem, null);
+            cbTimKiem.DisplayMember = "Value";
+            cbTimKiem.ValueMember = "Key";
+
+
+
+
+
+
+
+
             Dictionary<int, string> cbSourceChucVu = new Dictionary<int, string>();
             cbSourceChucVu.Add(1, "Nhân viên");
             cbSourceChucVu.Add(2, "Quản lý");
@@ -57,7 +75,58 @@ namespace QuanLyCHSach.View
 
         #region Sach
 
-    
+        private void btTimkiem_Click(object sender, EventArgs e)
+        {
+            DataTable dts = cs.TimKiem(cbTimKiem.SelectedValue, tbTimKiem.Text);
+
+            List<MSach> ls = new List<MSach>();
+            foreach (DataRow r in dts.Rows)
+            {
+                MSach m = new MSach();
+                m.Id = int.Parse(r["id"].ToString());
+                m.Ten = r["ten"].ToString();
+                m.Tacgia = r["tacgia"].ToString();
+                m.Tentheloai = r["tentheloai"].ToString();
+                m.Ngayxuatban = r["ngayxuatban"].ToString();
+                m.Tennhaxuatban = r["tennhaxuatban"].ToString();
+                m.Soluong = int.Parse(r["soluong"].ToString());
+                m.Dongia = double.Parse(r["dongia"].ToString());
+                ls.Add(m);
+            }
+
+            if (ls.Count != 0)
+            {
+                DataTable tb = new DataTable();
+                tb.Columns.Add("Id", typeof(String));
+                tb.Columns.Add("TT", typeof(int));
+                tb.Columns.Add("Tên", typeof(String));
+                tb.Columns.Add("Tác giả", typeof(String));
+                tb.Columns.Add("Thể loại", typeof(String));
+                tb.Columns.Add("Ngày xuất bản", typeof(String));
+                tb.Columns.Add("Nhà xuất bản", typeof(String));
+                tb.Columns.Add("Số lượng", typeof(int));
+                tb.Columns.Add("Đơn giá", typeof(double));
+                int tt = 0;
+                foreach (MSach m in ls)
+                {
+                    tt++;
+                    DataRow r = tb.NewRow();
+                    r["Id"] = m.Id.ToString();
+                    r["TT"] = tt.ToString();
+                    r["Tên"] = m.Ten;
+                    r["Tác giả"] = m.Tacgia;
+                    r["Thể loại"] = m.Tentheloai;
+                    r["Ngày xuất bản"] = m.Ngayxuatban;
+                    r["Nhà xuất bản"] = m.Tennhaxuatban;
+                    r["Số lượng"] = m.Soluong;
+                    r["Đơn giá"] = m.Dongia;
+
+                    tb.Rows.Add(r);
+                }
+                dtgvSach.DataSource = tb;
+                dtgvSach.Columns["Id"].Visible = false;
+            }
+        }
         private void LoadDuLieuSach()   
         {
             List<MSach> ls = new List<MSach>();
@@ -109,6 +178,7 @@ namespace QuanLyCHSach.View
                 dtgvSach.Columns["Id"].Visible = false;
             }
             DataTable dttl = ctl.HienThiTatCaTheLoai();
+            
             cbTheLoai.DataSource = dttl;
             cbTheLoai.DisplayMember = "ten";
             cbTheLoai.ValueMember = "id";
@@ -120,30 +190,29 @@ namespace QuanLyCHSach.View
         }
         private void btThem_Click(object sender, EventArgs e)
         {
-            MSach ms = new MSach();
-            ms.Ten = tbTenSach.Text;
-            ms.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
-            ms.Tacgia = tbTacGia.Text;
-            ms.Ngayxuatban = dtpNgayXuatBan.Value.ToString("yyyy-MM-dd");
-            ms.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
-            ms.Dongia = Convert.ToDouble(nudDonGia.Value);
-            ms.Soluong = Convert.ToInt32(nudSoLuong.Value);
-            cs.ThemSach(ms);
-            XoaDuLieuTabPageSach();
-
-            LoadDuLieuSach();
-
+            
             if (!String.IsNullOrEmpty(tbTenSach.Text))
             {
                 try
                 {
-                    
+                    MSach ms = new MSach();
+                    ms.Ten = tbTenSach.Text;
+                    ms.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
+                    ms.Tacgia = tbTacGia.Text;
+                    ms.Ngayxuatban = dtpNgayXuatBan.Value.ToString("yyyy-MM-dd");
+                    ms.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
+                    ms.Dongia = Convert.ToDouble(nudDonGia.Value);
+                    ms.Soluong = Convert.ToInt32(nudSoLuong.Value);
+                    cs.ThemSach(ms);
+                    XoaDuLieuTabPageSach();
+
+                    LoadDuLieuSach();
+
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
-                    throw;
                 }
             }
         }
@@ -171,7 +240,6 @@ namespace QuanLyCHSach.View
                 {
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
-                    throw;
                 }
                
 
@@ -239,10 +307,9 @@ namespace QuanLyCHSach.View
             }
             catch (Exception)
             {
-
-                throw;
+                return;
             }
-            
+
         }
 
 
@@ -312,7 +379,6 @@ namespace QuanLyCHSach.View
                 {
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
-                    throw;
                 }
             }
         }
@@ -365,16 +431,15 @@ namespace QuanLyCHSach.View
                 if (dtgvTheLoai.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
                 {
                     dtgvTheLoai.CurrentRow.Selected = true;
-                    tbIdTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["id"].FormattedValue.ToString();
-                    tbTenTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["ten"].FormattedValue.ToString();
+                    tbIdTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                    tbTenTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
                 }
             }
             catch (Exception)
             {
-
-                throw;
+                return;
             }
-            
+
         }
         #endregion
 
@@ -446,7 +511,6 @@ namespace QuanLyCHSach.View
                 {
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
-                    throw;
                 }
             }
         }
@@ -499,14 +563,14 @@ namespace QuanLyCHSach.View
                 if (dtgvTheLoai.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
                 {
                     dtgvNhaXuatBan.CurrentRow.Selected = true;
-                    tbIdNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["id"].FormattedValue.ToString();
-                    tbTenNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["ten"].FormattedValue.ToString();
+                    tbIdNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                    tbTenNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
+                    tbDiaChiNxb.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Địa chỉ"].FormattedValue.ToString();
                 }
             }
             catch (Exception)
             {
-
-                throw;
+                return;
             }
         }
 
@@ -579,27 +643,32 @@ namespace QuanLyCHSach.View
         private void LoadDuLieuComboboxNhanVien()
         {
             //cbNhanVien.Items.Clear();
+
             DataTable dtnv = cnv.HienThiTatCaNhanVien();
             Dictionary<int, string> dicNhanVien = new Dictionary<int, string>();
 
-            foreach (DataRow r in dtnv.Rows)
+            if (dtnv != null)
             {
-                int id = int.Parse(r["id"].ToString());
-                string ten = r["ten"].ToString();
-                int o = int.Parse(r["id_chucvu"].ToString());
-                string chucvu = string.Empty;
-                if (o == 1)
-                    chucvu = "Nhân viên";
-                else
-                    chucvu = "Quản lý";
-                string ngaysinh = r["ngaysinh"].ToString();
-                string item = $"{ten} \t {chucvu} \t {ngaysinh}";
-                dicNhanVien.Add(id, item);
-            }
+                foreach (DataRow r in dtnv.Rows)
+                {
+                    int id = int.Parse(r["id"].ToString());
+                    string ten = r["ten"].ToString();
+                    int o = int.Parse(r["id_chucvu"].ToString());
+                    string chucvu = string.Empty;
+                    if (o == 1)
+                        chucvu = "Nhân viên";
+                    else
+                        chucvu = "Quản lý";
+                    string ngaysinh = r["ngaysinh"].ToString();
+                    string item = $"{ten} \t {chucvu} \t {ngaysinh}";
+                    dicNhanVien.Add(id, item);
+                }
 
-            cbNhanVien.DataSource = new BindingSource(dicNhanVien, null); ;
-            cbNhanVien.DisplayMember = "Value";
-            cbNhanVien.ValueMember = "Key";
+                cbNhanVien.DataSource = new BindingSource(dicNhanVien, null); ;
+                cbNhanVien.DisplayMember = "Value";
+                cbNhanVien.ValueMember = "Key";
+            }
+            
         }
 
 
@@ -630,7 +699,6 @@ namespace QuanLyCHSach.View
                 {
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
-                    throw;
                 }
             }
         }
@@ -703,8 +771,7 @@ namespace QuanLyCHSach.View
             }
             catch (Exception)
             {
-
-                throw;
+                return;
             }
         }
 
@@ -794,7 +861,6 @@ namespace QuanLyCHSach.View
                 {
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
-                    throw;
                 }
             }
         }
@@ -857,10 +923,10 @@ namespace QuanLyCHSach.View
             }
             catch (Exception)
             {
-
-                throw;
+                return;
             }
         }
+
 
 
         #endregion

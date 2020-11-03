@@ -33,7 +33,28 @@ namespace QuanLyCHSach
             return dtable;
         }
 
-        
+        public DataTable TimKiem(object column, string st)
+        {
+            DataTable dtable = new DataTable();
+            dtable = null;
+
+            string truyvan = "SELECT s.id, s.ten, s.tacgia, s.ngayxuatban, s.soluong, s.dongia, tl.ten as tentheloai, nxb.ten as tennhaxuatban FROM dbo.Sach as s " +
+                "INNER JOIN dbo.TheLoai as tl ON s.id_theloai = tl.id " +
+                $"INNER JOIN dbo.NhaXuatBan as nxb ON s.id_nhaxuatban = nxb.id WHERE {column} LIKE '%{st}%'";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+
+            DataSet ds = base.DocDuLieu(cmd);
+            if (dtable == null && ds.Tables.Count > 0)
+            {
+                dtable = ds.Tables[0];
+            }
+
+            return dtable;
+        }
+
         public DataTable HienThiTheoIdSach(String id)
         {
             DataTable dtable = new DataTable();

@@ -9,8 +9,9 @@ namespace QuanLyCHSach.Model
     class MCTHD
     {
         public int Id { get; set; }
-        public string Id_hoadon { get; set; }
-        public string Id_sach { get; set; }
+        public int Id_hoadon { get; set; }
+        public int Id_sach { get; set; }
+        public string Ten_sach { get; set; }
         public int Soluong { get; set; }
 
     }

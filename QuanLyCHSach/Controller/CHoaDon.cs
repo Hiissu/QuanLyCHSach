@@ -45,39 +45,39 @@ namespace QuanLyCHSach.Controller
         }
 
 
-        public void CapNhatHoaDon(MHoaDon obj, object idHoaDon)
-        {
-            string truyvan = $"UPDATE [dbo].[HoaDon] " +
-                $"SET [ngaylap] = N'{obj.Ngaylap}', [id_nhanvien] = N'{obj.Id_nhanvien}' " +
-                $"WHERE [id] = '{idHoaDon}'";
+        //public void CapNhatHoaDon(MHoaDon obj, object idHoaDon)
+        //{
+        //    string truyvan = $"UPDATE [dbo].[HoaDon] " +
+        //        $"SET [ngaylap] = N'{obj.Ngaylap}', [id_nhanvien] = N'{obj.Id_nhanvien}' " +
+        //        $"WHERE [id] = '{idHoaDon}'";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.CommandType = CommandType.Text;
+        //    cmd.CommandText = truyvan;
 
-            base.GhiDuLieu(cmd);
-        }
+        //    base.GhiDuLieu(cmd);
+        //}
 
-        public void XoaHoaDon(int id)
-        {
-            string truyvan = $"DELETE FROM [dbo].[HoaDon] WHERE [id] = '{id}'";
+        //public void XoaHoaDon(int id)
+        //{
+        //    string truyvan = $"DELETE FROM [dbo].[HoaDon] WHERE [id] = '{id}'";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.CommandType = CommandType.Text;
+        //    cmd.CommandText = truyvan;
 
-            base.GhiDuLieu(cmd);
-        }
+        //    base.GhiDuLieu(cmd);
+        //}
 
-        public void XoaTatCaHoaDon()
-        {
-            string truyvan = "DELETE FROM [dbo].[HoaDon]";
+        //public void XoaTatCaHoaDon()
+        //{
+        //    string truyvan = "DELETE FROM [dbo].[HoaDon]";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.CommandType = CommandType.Text;
+        //    cmd.CommandText = truyvan;
 
-            base.GhiDuLieu(cmd);
-        }
+        //    base.GhiDuLieu(cmd);
+        //}
     }
 }
