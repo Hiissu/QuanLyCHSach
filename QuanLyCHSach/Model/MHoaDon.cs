@@ -9,8 +9,9 @@ namespace QuanLyCHSach.Model
     class MHoaDon
     {
         public int Id { get; set; }
-        public string Ngaylap { get; set; }
+        public DateTime Ngaylap { get; set; }
         public int Id_nhanvien { get; set; }
         public string Tennhanvien { get; set; }
+        public int Tongtien { get; set; }
     }
 }

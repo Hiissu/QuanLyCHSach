@@ -11,12 +11,13 @@ namespace QuanLyCHSach.Controller
 {
     class CCTHD : dbConnection
     {
-        public DataTable HienThiTatCaCTHD()
+        public DataTable HienThiCTHD(int idHoaDon)
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = "SELECT * FROM dbo.CTHD ";
+            string truyvan = $"select ct.id, ct.id_sach, s.ten as tensach, ct.soluong, s.dongia, s.dongia * ct.soluong as thanhtien from CTHD as ct, Sach as s " +
+                $"where ct.id_sach = s.id and ct.id_hoadon = {idHoaDon}";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;

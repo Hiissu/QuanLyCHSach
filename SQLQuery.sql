@@ -11,7 +11,7 @@ create table NhanVien
 id int identity(1,1)  primary key,
 ten nvarchar(100) ,
 diachi nvarchar(100) ,
-ngaysinh nvarchar(100) ,
+ngaysinh date ,
 sdt nvarchar(15) ,
 id_chucvu int,
 foreign key (id_chucvu) references Chucvu(id)
@@ -34,7 +34,7 @@ create table Sach
 id  int identity(1,1)  primary key,
 ten nvarchar(100) ,
 tacgia nvarchar(100) ,
-ngayxuatban nvarchar(100) ,
+ngayxuatban date ,
 soluong int ,
 dongia float ,
 id_theloai int ,
@@ -62,12 +62,12 @@ diachi nvarchar(100)
 create table HoaDon
 (
 id int identity(1,1)  primary key,
-ngaylap nvarchar(100) ,
+ngaylap date ,
 id_nhanvien int,
 foreign key (id_nhanvien) references Nhanvien(id)
 )
 
-
+alter table HoaDon add tongtien int
 
 
 create table CTHD
@@ -90,3 +90,15 @@ SELECT s.id, s.ten, s.tacgia, s.ngayxuatban, s.soluong, s.dongia, tl.ten as tent
 
 INSERT INTO dbo.CTHD(id_hoadon, id_sach, soluong)  VALUES (IDENT_CURRENT('HoaDon'), IDENT_CURRENT('Sach'), '12')
 
+SELECT * FROM dbo.HoaDon WHERE ngaylap >= '09-09-2020' AND ngaylap <='25-09-2020'
+
+SELECT hd.ngaylap, hd.id_nhanvien , COUNT(tt.thanhtien)  as tongtien FROM HoaDon as hd, CTHD as ct, Sach as s 
+where hd.id = ct.id_hoadon and ct.id_sach = s.id  
+
+INNER JOIN CTHD as cthd ON hd.id = cthd.id_hoadon
+INNER JOIN Sach as s ON cthd.id_sach = s.id  
+INNER JOIN (select s.dongia * cthd.soluong as thanhtien, cthd.id_hoadon as id  from CTHD as cthd inner join Sach as s on cthd.id_sach = s.id ) as tt ON cthd.id_hoadon = tt.id 
+
+
+
+--COUNT(select s.dongia * cthd.soluong  from CTHD as cthd inner join Sach as s on cthd.id_sach = s.id)  as tongtien FROM HoaDon as hd 

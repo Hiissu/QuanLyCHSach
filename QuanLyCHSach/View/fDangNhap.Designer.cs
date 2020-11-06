@@ -38,7 +38,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 30);
+            this.label1.Location = new System.Drawing.Point(209, 121);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 18);
@@ -47,26 +47,28 @@
             // 
             // tbTenDangNhap
             // 
-            this.tbTenDangNhap.Location = new System.Drawing.Point(147, 30);
-            this.tbTenDangNhap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbTenDangNhap.Location = new System.Drawing.Point(328, 118);
+            this.tbTenDangNhap.Margin = new System.Windows.Forms.Padding(4);
             this.tbTenDangNhap.Name = "tbTenDangNhap";
             this.tbTenDangNhap.Size = new System.Drawing.Size(211, 24);
             this.tbTenDangNhap.TabIndex = 1;
+            this.tbTenDangNhap.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbMatKhau
             // 
-            this.tbMatKhau.Location = new System.Drawing.Point(147, 74);
-            this.tbMatKhau.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbMatKhau.Location = new System.Drawing.Point(328, 162);
+            this.tbMatKhau.Margin = new System.Windows.Forms.Padding(4);
             this.tbMatKhau.Name = "tbMatKhau";
             this.tbMatKhau.PasswordChar = '*';
             this.tbMatKhau.Size = new System.Drawing.Size(211, 24);
             this.tbMatKhau.TabIndex = 2;
+            this.tbMatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbMatKhau.UseSystemPasswordChar = true;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 74);
+            this.label2.Location = new System.Drawing.Point(249, 168);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 18);
@@ -75,8 +77,8 @@
             // 
             // btDangNhap
             // 
-            this.btDangNhap.Location = new System.Drawing.Point(246, 106);
-            this.btDangNhap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btDangNhap.Location = new System.Drawing.Point(427, 194);
+            this.btDangNhap.Margin = new System.Windows.Forms.Padding(4);
             this.btDangNhap.Name = "btDangNhap";
             this.btDangNhap.Size = new System.Drawing.Size(112, 32);
             this.btDangNhap.TabIndex = 3;
@@ -84,21 +86,21 @@
             this.btDangNhap.UseVisualStyleBackColor = true;
             this.btDangNhap.Click += new System.EventHandler(this.btDangNhap_Click);
             // 
-            // formDangNhap
+            // fDangNhap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(387, 163);
+            this.ClientSize = new System.Drawing.Size(894, 405);
             this.Controls.Add(this.btDangNhap);
             this.Controls.Add(this.tbMatKhau);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tbTenDangNhap);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "formDangNhap";
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "fDangNhap";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "formDangNhap";
+            this.Text = "Đăng nhập";
             this.ResumeLayout(false);
             this.PerformLayout();
 

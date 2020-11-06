@@ -31,7 +31,26 @@ namespace QuanLyCHSach.Controller
             return dtable;
         }
 
-        
+        public DataTable HienThiHoaDon(DateTime tuNgay, DateTime denNgay)
+        {
+            DataTable dtable = new DataTable();
+            dtable = null;
+
+            string truyvan = $"SELECT hd.id, hd.id_nhanvien, nv.ten as tennhanvien, hd.ngaylap, hd.tongtien  FROM HoaDon as hd INNER JOIN NhanVien as nv On hd.id_nhanvien = nv.id WHERE ngaylap >= '{tuNgay.ToString("MM-dd-yyyy")}' AND ngaylap <= '{denNgay.ToString("MM-dd-yyyy")}'";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+
+            DataSet ds = base.DocDuLieu(cmd);
+            if (dtable == null && ds.Tables.Count > 0)
+            {
+                dtable = ds.Tables[0];
+            }
+
+            return dtable;
+        }
+
         public void ThemHoaDon(MHoaDon obj)
         {
             string truyvan = $"INSERT INTO [dbo].[HoaDon]([ngaylap], [id_nhanvien]) " +

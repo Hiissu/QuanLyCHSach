@@ -13,7 +13,7 @@ namespace QuanLyCHSach.Model
         public string Tacgia { get; set; }
         public int Id_theloai { get; set; }
         public string Tentheloai { get; set; }
-        public string Ngayxuatban { get; set; }
+        public DateTime Ngayxuatban { get; set; }
         public int Id_nhaxuatban { get; set; }
         public string Tennhaxuatban { get; set; }
         public int Soluong { get; set; }

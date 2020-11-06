@@ -13,6 +13,8 @@ namespace QuanLyCHSach.Model
         public int Id_sach { get; set; }
         public string Ten_sach { get; set; }
         public int Soluong { get; set; }
+        public int Dongia { get; set; }
+        public int Thanhtien { get; set; }
 
     }
 }
