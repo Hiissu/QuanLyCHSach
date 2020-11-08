@@ -19,10 +19,29 @@ namespace QuanLyCHSach.View
 
         private void btDangNhap_Click(object sender, EventArgs e)
         {
-            fQuanLy f = new fQuanLy();
-            this.Hide();
-            f.ShowDialog();
-            this.Show();
+            string tenDangNhap = tbTenDangNhap.Text;
+            string matKhau = tbMatKhau.Text;
+            DataTable dt = Login(tenDangNhap, matKhau);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow r in dt.Rows)
+                {
+                    fQuanLy f = new fQuanLy(r["tendangnhap"].ToString(), Convert.ToBoolean(r["loaitaikhoan"].ToString()));
+                    this.Hide();
+                    f.ShowDialog();
+                    this.Show();
+                }
+            
+            }
+            else
+            {
+                MessageBox.Show("Tài khoản hoặc mật khẩu không chính xác.");
+            }
+        }
+        CTaiKhoan ctk = new CTaiKhoan();
+        DataTable Login(string tenDangNhap, string matKhau)
+        {
+            return ctk.Login(tenDangNhap, matKhau);
         }
     }
 }

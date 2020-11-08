@@ -31,11 +31,21 @@ namespace QuanLyCHSach.View
         private void fAdmin_Load(object sender, EventArgs e)
         {
             dtpNgayXuatBan.Value = DateTime.Today;
-            LoadDuLieuSach();
-            LoadDuLieuTheLoai();
-            LoadDuLieuNXB();
-            LoadDuLieuTaiKhoan();
-            LoadDuLieuNhanVien();
+
+            DataTable dts = cs.HienThiTatCaSach();
+            LoadDuLieuSach(dts);
+
+            DataTable dttl = ctl.HienThiTatCaTheLoai();
+            LoadDuLieuTheLoai(dttl);
+
+            DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+            LoadDuLieuNXB(dtnxb);
+
+            DataTable dttk = ctk.HienThiTatCaTaiKhoan();
+            LoadDuLieuTaiKhoan(dttk);
+
+            DataTable dtnv = cnv.HienThiTatCaNhanVien();
+            LoadDuLieuNhanVien(dtnv);
 
             DataTable data = chd.HienThiHoaDon(dtpTuNgay.Value, dtpDenNgay.Value);
             LoadDuLieuHoaDon(data);
@@ -76,66 +86,19 @@ namespace QuanLyCHSach.View
 
         private void btTimkiem_Click(object sender, EventArgs e)
         {
-            DataTable dts = cs.TimKiem(cbTimKiem.SelectedValue, tbTimKiem.Text);
-
-            List<MSach> ls = new List<MSach>();
-            foreach (DataRow r in dts.Rows)
-            {
-                MSach m = new MSach();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Ten = r["ten"].ToString();
-                m.Tacgia = r["tacgia"].ToString();
-                m.Tentheloai = r["tentheloai"].ToString();
-                m.Ngayxuatban = Convert.ToDateTime( r["ngayxuatban"].ToString());
-                m.Tennhaxuatban = r["tennhaxuatban"].ToString();
-                m.Soluong = int.Parse(r["soluong"].ToString());
-                m.Dongia = double.Parse(r["dongia"].ToString());
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên", typeof(String));
-                tb.Columns.Add("Tác giả", typeof(String));
-                tb.Columns.Add("Thể loại", typeof(String));
-                tb.Columns.Add("Ngày xuất bản", typeof(String));
-                tb.Columns.Add("Nhà xuất bản", typeof(String));
-                tb.Columns.Add("Số lượng", typeof(int));
-                tb.Columns.Add("Đơn giá", typeof(double));
-                int tt = 0;
-                foreach (MSach m in ls)
-                {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên"] = m.Ten;
-                    r["Tác giả"] = m.Tacgia;
-                    r["Thể loại"] = m.Tentheloai;
-                    r["Ngày xuất bản"] = m.Ngayxuatban.ToString("dd-MM-yyyy");
-                    r["Nhà xuất bản"] = m.Tennhaxuatban;
-                    r["Số lượng"] = m.Soluong;
-                    r["Đơn giá"] = m.Dongia;
-
-                    tb.Rows.Add(r);
-                }
-                dtgvSach.DataSource = tb;
-                dtgvSach.Columns["Id"].Visible = false;
-            }
+            DataTable dttks = cs.TimKiem(cbTimKiem.SelectedValue, tbTimKiem.Text);
+            LoadDuLieuSach(dttks);
         }
 
         private void btReload_Click(object sender, EventArgs e)
         {
-            LoadDuLieuSach();
+            DataTable dts = cs.HienThiTatCaSach();
+            LoadDuLieuSach(dts);
         }
-        private void LoadDuLieuSach()   
+        private void LoadDuLieuSach(DataTable data)   
         {
             List<MSach> ls = new List<MSach>();
-            DataTable dts = cs.HienThiTatCaSach();
-            foreach (DataRow r in dts.Rows)
+            foreach (DataRow r in data.Rows)
             {
                 MSach m = new MSach();
                 m.Id = int.Parse(r["id"].ToString());
@@ -210,7 +173,8 @@ namespace QuanLyCHSach.View
                     cs.ThemSach(ms);
                     XoaDuLieuTabPageSach();
 
-                    LoadDuLieuSach();
+                    DataTable dts = cs.HienThiTatCaSach();
+                    LoadDuLieuSach(dts);
 
                 }
                 catch (Exception)
@@ -237,7 +201,9 @@ namespace QuanLyCHSach.View
                     mss.Dongia = Convert.ToDouble(nudDonGia.Value);
                     mss.Soluong = Convert.ToInt32(nudSoLuong.Value);
                     cs.CapNhatSach(mss, mss.Id);
-                    LoadDuLieuSach();
+
+                    DataTable dts = cs.HienThiTatCaSach();
+                    LoadDuLieuSach(dts);
                     XoaDuLieuTabPageSach();
                 }
                 catch (Exception)
@@ -264,7 +230,8 @@ namespace QuanLyCHSach.View
                     this.dtgvSach.DataSource = null;
                     this.dtgvSach.Rows.Clear();
 
-                    LoadDuLieuSach();
+                    DataTable dts = cs.HienThiTatCaSach();
+                    LoadDuLieuSach(dts);
                     XoaDuLieuTabPageSach();
                 }
                 else
@@ -338,12 +305,22 @@ namespace QuanLyCHSach.View
             tbIdTheLoai.Text = "";
             tbTenTheLoai.Text = "";
         }
+        private void btTimKiemTheLoai_Click(object sender, EventArgs e)
+        {
+            DataTable data = ctl.TimKiem(tbTimKiemTenTheLoai.Text);
+            LoadDuLieuTheLoai(data);
+        }
 
-        private void LoadDuLieuTheLoai()
+        private void btReloadTheLoai_Click(object sender, EventArgs e)
+        {
+            DataTable data = ctl.HienThiTatCaTheLoai();
+            LoadDuLieuTheLoai(data);
+        }
+
+        private void LoadDuLieuTheLoai(DataTable data)
         {
             List<MTheLoai> ls = new List<MTheLoai>();
-            DataTable dttl = ctl.HienThiTatCaTheLoai();
-            foreach (DataRow r in dttl.Rows)
+            foreach (DataRow r in data.Rows)
             {
                 MTheLoai m = new MTheLoai();
                 m.Id = int.Parse(r["id"].ToString());
@@ -382,7 +359,8 @@ namespace QuanLyCHSach.View
                 {
                     ctl.ThemTheLoai(tbTenTheLoai.Text);
                     XoaDuLieuTabPageTheLoai();
-                    LoadDuLieuTheLoai();
+                    DataTable data = ctl.HienThiTatCaTheLoai();
+                    LoadDuLieuTheLoai(data);
 
                     DataTable dttl = ctl.HienThiTatCaTheLoai();
                     cbTheLoai.DataSource = dttl;
@@ -405,7 +383,8 @@ namespace QuanLyCHSach.View
             {
                 ctl.CapNhatTheLoai(tbTenTheLoai.Text, int.Parse(tbIdTheLoai.Text));
                 XoaDuLieuTabPageTheLoai();
-                LoadDuLieuTheLoai();
+                DataTable data = ctl.HienThiTatCaTheLoai();
+                LoadDuLieuTheLoai(data);
 
 
                 DataTable dttl = ctl.HienThiTatCaTheLoai();
@@ -430,7 +409,8 @@ namespace QuanLyCHSach.View
                     this.dtgvTheLoai.DataSource = null;
                     this.dtgvTheLoai.Rows.Clear();
 
-                    LoadDuLieuTheLoai();
+                    DataTable data = ctl.HienThiTatCaTheLoai();
+                    LoadDuLieuTheLoai(data);
 
                     DataTable dttl = ctl.HienThiTatCaTheLoai();
                     cbTheLoai.DataSource = dttl;
@@ -478,11 +458,23 @@ namespace QuanLyCHSach.View
             tbTenNhaXuatBan.Text = "";
             tbDiaChiNxb.Text = "";
         }
-        private void LoadDuLieuNXB()
+
+        private void btReloadNxb_Click(object sender, EventArgs e)
+        {
+            DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+            LoadDuLieuNXB(dtnxb);
+        }
+
+        private void btTimKiemNhaXuatBan_Click(object sender, EventArgs e)
+        {
+            DataTable data = cnxb.TimKiem(tbTimKiemTenNXB.Text);
+            LoadDuLieuNXB(data);
+
+        }
+        private void LoadDuLieuNXB(DataTable data)
         {
             List<MNhaXuatBan> ls = new List<MNhaXuatBan>();
-            DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
-            foreach (DataRow r in dtnxb.Rows)
+            foreach (DataRow r in data.Rows)
             {
                 MNhaXuatBan m = new MNhaXuatBan();
                 m.Id = int.Parse(r["id"].ToString());
@@ -527,9 +519,9 @@ namespace QuanLyCHSach.View
                     mnxb.Diachi = tbDiaChiNxb.Text;
                     cnxb.ThemNhaXuatBan(mnxb);
                     XoaDuLieuTabPageNXB();
-                    LoadDuLieuNXB();
-
                     DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                    LoadDuLieuNXB(dtnxb);
+
                     cbNhaXuatBan.DataSource = dtnxb;
                     cbNhaXuatBan.DisplayMember = "ten";
                     cbNhaXuatBan.ValueMember = "id";
@@ -550,9 +542,10 @@ namespace QuanLyCHSach.View
                 mnxbb.Ten = tbTenTheLoai.Text;
                 cnxb.CapNhatNhaXuatBan(mnxbb, tbIdNhaXuatBan.Text);
                 XoaDuLieuTabPageTheLoai();
-                LoadDuLieuNXB();
 
                 DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                LoadDuLieuNXB(dtnxb);
+
                 cbNhaXuatBan.DataSource = dtnxb;
                 cbNhaXuatBan.DisplayMember = "ten";
                 cbNhaXuatBan.ValueMember = "id";
@@ -575,9 +568,9 @@ namespace QuanLyCHSach.View
                     this.dtgvNhaXuatBan.DataSource = null;
                     this.dtgvNhaXuatBan.Rows.Clear();
 
-                    LoadDuLieuNXB();
-
                     DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                    LoadDuLieuNXB(dtnxb);
+
                     cbNhaXuatBan.DataSource = dtnxb;
                     cbNhaXuatBan.DisplayMember = "ten";
                     cbNhaXuatBan.ValueMember = "id";
@@ -625,12 +618,24 @@ namespace QuanLyCHSach.View
             tbTenHienThi.Text = "";
             cbNhanVien.SelectedItem = null;
         }
-        
-        private void LoadDuLieuTaiKhoan()
+
+        private void btReloadTaiKhoan_Click(object sender, EventArgs e)
+        {
+            DataTable dttk = ctk.HienThiTatCaTaiKhoan();
+            LoadDuLieuTaiKhoan(dttk);
+        }
+
+        private void btTimTenTaiKhoan_Click(object sender, EventArgs e)
+        {
+            DataTable dttk = ctk.TimKiem(tbTimTenDangNhap.Text);
+            LoadDuLieuTaiKhoan(dttk);
+        }
+
+     
+        private void LoadDuLieuTaiKhoan(DataTable data)
         {
             List<MTaiKhoan> ls = new List<MTaiKhoan>();
-            DataTable dttk = ctk.HienThiTatCaTaiKhoan();
-            foreach (DataRow r in dttk.Rows)
+            foreach (DataRow r in data.Rows)
             {
                 MTaiKhoan m = new MTaiKhoan();
                 m.Id = int.Parse(r["id"].ToString());
@@ -701,7 +706,7 @@ namespace QuanLyCHSach.View
                 string ngaysinh = r["ngaysinh"].ToString();
                 string diachi = r["diachi"].ToString();
 
-                string item = $"Tên: {ten} ||\t\t Chức vụ: {chucvu} ||\t\t Địa chỉ: {diachi} ||\t\t Ngày sinh: {ngaysinh}";
+                string item = $"Tên: {ten}         |Chức vụ: {chucvu}       |Địa chỉ: {diachi}          |Ngày sinh: {ngaysinh}";
                 dicNhanVien.Add(id, item);
             }
             if (dicNhanVien.Count > 0)
@@ -725,6 +730,7 @@ namespace QuanLyCHSach.View
                     if (cbNhanVien.SelectedItem == null)
                     {
                         MessageBox.Show("Hãy chọn nhân viên!");
+                        return;
                     }
 
                     mtk.Tendangnhap = tbTenDangNhap.Text;
@@ -733,9 +739,17 @@ namespace QuanLyCHSach.View
                     mtk.Loaitaikhoan = Convert.ToBoolean(cbLoaiTaiKhoan.SelectedValue.ToString());
                     mtk.Id_nhanvien = Convert.ToInt32(cbNhanVien.SelectedValue.ToString());
 
-                    ctk.ThemTaiKhoan(mtk);
-                    XoaDuLieuTabPageTaiKhoan();
-                    LoadDuLieuTaiKhoan();
+                    if (ctk.ThemTaiKhoan(mtk))
+                    {
+                        XoaDuLieuTabPageTaiKhoan();
+                        DataTable dttk = ctk.HienThiTatCaTaiKhoan();
+                        LoadDuLieuTaiKhoan(dttk);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Tài khoản đã tồn tại!");
+
+                    }
                 }
                 catch (Exception)
                 {
@@ -761,9 +775,18 @@ namespace QuanLyCHSach.View
                 mtk.Tenhienthi = tbTenHienThi.Text;
                 mtk.Loaitaikhoan = Convert.ToBoolean(cbLoaiTaiKhoan.SelectedValue.ToString());
                 mtk.Id_nhanvien = Convert.ToInt32(cbNhanVien.SelectedValue.ToString());
-                ctk.CapNhatTaiKhoan(mtk, tbIdTaiKhoan.Text);
-                XoaDuLieuTabPageTaiKhoan();
-                LoadDuLieuTaiKhoan();
+
+                if (ctk.CapNhatTaiKhoan(mtk, tbIdTaiKhoan.Text))
+                {
+                    XoaDuLieuTabPageTaiKhoan();
+                    DataTable dttk = ctk.HienThiTatCaTaiKhoan();
+                    LoadDuLieuTaiKhoan(dttk);
+                }
+                else
+                {
+                    MessageBox.Show("Tài khoản đã tồn tại!");
+
+                }
             }
             else
             {
@@ -775,14 +798,15 @@ namespace QuanLyCHSach.View
         {
             try
             {
-                if (!String.IsNullOrEmpty(tbIdNhaXuatBan.Text))
+                if (!String.IsNullOrEmpty(tbIdTaiKhoan.Text))
                 {
                     ctk.XoaTaiKhoan(int.Parse(tbIdTaiKhoan.Text));
                     XoaDuLieuTabPageTaiKhoan();
                     this.dtgvTaiKhoan.DataSource = null;
                     this.dtgvTaiKhoan.Rows.Clear();
 
-                    LoadDuLieuTaiKhoan();
+                    DataTable dttk = ctk.HienThiTatCaTaiKhoan();
+                    LoadDuLieuTaiKhoan(dttk);
                 }
                 else
                 {
@@ -842,11 +866,22 @@ namespace QuanLyCHSach.View
             tbSdt.Text = "";
         }
 
-        private void LoadDuLieuNhanVien()
+        private void btReloadNhanVien_Click(object sender, EventArgs e)
+        {
+            DataTable dtnv = cnv.HienThiTatCaNhanVien();
+            LoadDuLieuNhanVien(dtnv);
+        }
+
+        private void btTimNhanVien_Click(object sender, EventArgs e)
+        {
+            DataTable dtnv = cnv.TimKiem(tbTimKiemTenNhanVien.Text);
+            LoadDuLieuNhanVien(dtnv);
+
+        }
+        private void LoadDuLieuNhanVien(DataTable data)
         {
             List<MNhanVien> ls = new List<MNhanVien>();
-            DataTable dtnv = cnv.HienThiTatCaNhanVien();
-            foreach (DataRow r in dtnv.Rows)
+            foreach (DataRow r in data.Rows)
             {
                 MNhanVien m = new MNhanVien();
                 m.Id = int.Parse(r["id"].ToString());
@@ -907,7 +942,8 @@ namespace QuanLyCHSach.View
                     mnv.Id_chucvu = Convert.ToInt32(cbChucVu.SelectedValue.ToString());
                     cnv.ThemNhanVien(mnv);
                     XoaDuLieuTabPageNhanVien();
-                    LoadDuLieuNhanVien();
+                    DataTable dtnv = cnv.HienThiTatCaNhanVien();
+                    LoadDuLieuNhanVien(dtnv);
                 }
                 catch (Exception)
                 {
@@ -930,7 +966,8 @@ namespace QuanLyCHSach.View
                 mnv.Id_chucvu = Convert.ToInt32(cbChucVu.SelectedValue.ToString());
                 cnv.CapNhatNhanVien(mnv, tbIdNhanVien.Text);
                 XoaDuLieuTabPageNhanVien();
-                LoadDuLieuNhanVien();
+                DataTable dtnv = cnv.HienThiTatCaNhanVien();
+                LoadDuLieuNhanVien(dtnv);
 
             }
             else
@@ -950,7 +987,8 @@ namespace QuanLyCHSach.View
                     this.dtgvNhanVien.DataSource = null;
                     this.dtgvNhanVien.Rows.Clear();
 
-                    LoadDuLieuNhanVien();
+                    DataTable dtnv = cnv.HienThiTatCaNhanVien();
+                    LoadDuLieuNhanVien(dtnv);
                 }
                 else
                 {
@@ -1086,44 +1124,10 @@ namespace QuanLyCHSach.View
         }
         #endregion
 
-        private void btTimKiemTheLoai_Click(object sender, EventArgs e)
-        {
+        
 
-        }
+        
 
-        private void btReloadTheLoai_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btReloadNxb_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btTimKiemNhaXuatBan_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btReloadTaiKhoan_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btTimTenTaiKhoan_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btReloadNhanVien_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btTimNhanVien_Click(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

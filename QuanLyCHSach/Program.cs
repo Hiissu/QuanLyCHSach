@@ -16,7 +16,7 @@ namespace QuanLyCHSach
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fQuanLy());
+            Application.Run(new fDangNhap());
         }
     }
 }

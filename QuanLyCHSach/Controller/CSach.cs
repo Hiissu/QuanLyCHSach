@@ -23,14 +23,21 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
-
-            DataSet ds = base.DocDuLieu(cmd);
-            if (dtable == null && ds.Tables.Count > 0)
+            try
             {
-                dtable = ds.Tables[0];
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
+                return dtable;
+            }
+            catch (Exception)
+            {
+
+                return dtable;
             }
 
-            return dtable;
         }
 
         public DataTable TimKiem(object column, string st)
@@ -45,14 +52,22 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
-
-            DataSet ds = base.DocDuLieu(cmd);
-            if (dtable == null && ds.Tables.Count > 0)
+            try
             {
-                dtable = ds.Tables[0];
-            }
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
 
-            return dtable;
+                return dtable;
+
+            }
+            catch (Exception)
+            {
+
+                return dtable;
+            }
         }
 
         public DataTable HienThiTheoIdSach(String id)
@@ -64,14 +79,23 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
-
-            DataSet ds = base.DocDuLieu(cmd);
-            if (dtable == null && ds.Tables.Count > 0)
+            try
             {
-                dtable = ds.Tables[0];
-            }
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
 
-            return dtable;
+                return dtable;
+
+            }
+            catch (Exception)
+            {
+
+                return dtable;
+
+            }
         }
         public void ThemSach(MSach obj)
         {
@@ -82,8 +106,15 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
 
@@ -97,8 +128,16 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
         public void XoaSach(object idSach)
@@ -108,8 +147,16 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
         public void XoaTatCaSach()

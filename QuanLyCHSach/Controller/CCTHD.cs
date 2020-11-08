@@ -22,14 +22,22 @@ namespace QuanLyCHSach.Controller
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
-
-            DataSet ds = base.DocDuLieu(cmd);
-            if (dtable == null && ds.Tables.Count > 0)
+            try
             {
-                dtable = ds.Tables[0];
-            }
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
 
-            return dtable;
+                return dtable;
+
+            }
+            catch (Exception)
+            {
+
+                return dtable;
+            }
         }
 
        
@@ -41,8 +49,16 @@ namespace QuanLyCHSach.Controller
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
 

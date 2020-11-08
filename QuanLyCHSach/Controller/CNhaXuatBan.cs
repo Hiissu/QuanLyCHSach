@@ -20,16 +20,50 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
-
-            DataSet ds = base.DocDuLieu(cmd);
-            if (dtable == null && ds.Tables.Count > 0)
+            try
             {
-                dtable = ds.Tables[0];
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
+
+                return dtable;
+
             }
+            catch (Exception)
+            {
 
-            return dtable;
+                return dtable;
+            }
         }
+        public DataTable TimKiem(string st)
+        {
+            DataTable dtable = new DataTable();
+            dtable = null;
 
+            string truyvan = $"SELECT * FROM dbo.NhaXuatBan  WHERE ten LIKE '%{st}%'";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+            try
+            {
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
+
+                return dtable;
+
+            }
+            catch (Exception)
+            {
+
+                return dtable;
+            }
+        }
 
         public void ThemNhaXuatBan(MNhaXuatBan obj)
         {
@@ -39,8 +73,16 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
 
@@ -53,8 +95,16 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
         public void XoaNhaXuatBan(object idNhaXuatBan)
@@ -64,8 +114,16 @@ namespace QuanLyCHSach
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
 
-            base.GhiDuLieu(cmd);
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
 
         public void XoaTatCaNhaXuatBan()

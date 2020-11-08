@@ -15,10 +15,24 @@ namespace QuanLyCHSach.View
 {
     public partial class fQuanLy : Form
     {
-        public fQuanLy()
+        public fQuanLy(string tenDangNhap, bool loaiTaiKhoan)
         {
             InitializeComponent();
+
+            tbTenDangNhap.Text = tenDangNhap;
+            if (!loaiTaiKhoan)
+            {
+                tbLoaiTaiKhoan.Text = "Nhân viên";
+                btQLCHSach.Visible = false;
+            }
+            else
+            {
+                tbLoaiTaiKhoan.Text = "Quản lý";
+                btQLCHSach.Visible = true;
+
+            }
         }
+
 
         private void fQuanLy_Load(object sender, EventArgs e)
         {
@@ -353,8 +367,13 @@ namespace QuanLyCHSach.View
 
         private void thôngTinTàiKhoảnToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fThongTinTaiKhoan f = new fThongTinTaiKhoan();
+            fThongTinTaiKhoan f = new fThongTinTaiKhoan(tbTenDangNhap.Text);
             f.ShowDialog();
+        }
+
+        private void btDangXuat_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

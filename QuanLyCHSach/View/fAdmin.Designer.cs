@@ -36,12 +36,13 @@
             this.dtpDenNgay = new System.Windows.Forms.DateTimePicker();
             this.dtpTuNgay = new System.Windows.Forms.DateTimePicker();
             this.tpNhanvien = new System.Windows.Forms.TabPage();
+            this.btReloadNhanVien = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
             this.btTimNhanVien = new System.Windows.Forms.Button();
             this.btXoaNhanVien = new System.Windows.Forms.Button();
             this.btThemNhanVien = new System.Windows.Forms.Button();
             this.btSuaNhanVien = new System.Windows.Forms.Button();
-            this.tbTimNhanVien = new System.Windows.Forms.TextBox();
+            this.tbTimKiemTenNhanVien = new System.Windows.Forms.TextBox();
             this.tbDiaChiNhanVien = new System.Windows.Forms.TextBox();
             this.tbSdt = new System.Windows.Forms.TextBox();
             this.tbIdNhanVien = new System.Windows.Forms.TextBox();
@@ -56,6 +57,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.dtgvNhanVien = new System.Windows.Forms.DataGridView();
             this.tpTaikhoan = new System.Windows.Forms.TabPage();
+            this.btReloadTaiKhoan = new System.Windows.Forms.Button();
             this.tbIdTaiKhoan = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
@@ -76,10 +78,11 @@
             this.dtgvTaiKhoan = new System.Windows.Forms.DataGridView();
             this.label23 = new System.Windows.Forms.Label();
             this.tpNXB = new System.Windows.Forms.TabPage();
+            this.btReloadNxb = new System.Windows.Forms.Button();
             this.label19 = new System.Windows.Forms.Label();
             this.tbIdNhaXuatBan = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.tbTimKiemTenNXB = new System.Windows.Forms.TextBox();
             this.tbTenNhaXuatBan = new System.Windows.Forms.TextBox();
             this.tbDiaChiNxb = new System.Windows.Forms.TextBox();
             this.btTimKiemNhaXuatBan = new System.Windows.Forms.Button();
@@ -90,6 +93,7 @@
             this.dtgvNhaXuatBan = new System.Windows.Forms.DataGridView();
             this.label10 = new System.Windows.Forms.Label();
             this.tpTheloai = new System.Windows.Forms.TabPage();
+            this.btReloadTheLoai = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.tbTimKiemTenTheLoai = new System.Windows.Forms.TextBox();
             this.tbIdTheLoai = new System.Windows.Forms.TextBox();
@@ -102,6 +106,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.dtgvTheLoai = new System.Windows.Forms.DataGridView();
             this.tpSach = new System.Windows.Forms.TabPage();
+            this.btReload = new System.Windows.Forms.Button();
             this.cbTimKiem = new System.Windows.Forms.ComboBox();
             this.cbNhaXuatBan = new System.Windows.Forms.ComboBox();
             this.cbTheLoai = new System.Windows.Forms.ComboBox();
@@ -128,11 +133,6 @@
             this.btSua = new System.Windows.Forms.Button();
             this.dtgvSach = new System.Windows.Forms.DataGridView();
             this.tcAdmin = new System.Windows.Forms.TabControl();
-            this.btReload = new System.Windows.Forms.Button();
-            this.btReloadTheLoai = new System.Windows.Forms.Button();
-            this.btReloadNxb = new System.Windows.Forms.Button();
-            this.btReloadTaiKhoan = new System.Windows.Forms.Button();
-            this.btReloadNhanVien = new System.Windows.Forms.Button();
             this.tpDoanhthu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvDoanhThu)).BeginInit();
             this.tpNhanvien.SuspendLayout();
@@ -235,7 +235,7 @@
             this.tpNhanvien.Controls.Add(this.btXoaNhanVien);
             this.tpNhanvien.Controls.Add(this.btThemNhanVien);
             this.tpNhanvien.Controls.Add(this.btSuaNhanVien);
-            this.tpNhanvien.Controls.Add(this.tbTimNhanVien);
+            this.tpNhanvien.Controls.Add(this.tbTimKiemTenNhanVien);
             this.tpNhanvien.Controls.Add(this.tbDiaChiNhanVien);
             this.tpNhanvien.Controls.Add(this.tbSdt);
             this.tpNhanvien.Controls.Add(this.tbIdNhanVien);
@@ -256,6 +256,18 @@
             this.tpNhanvien.TabIndex = 4;
             this.tpNhanvien.Text = "Nhân viên";
             this.tpNhanvien.UseVisualStyleBackColor = true;
+            // 
+            // btReloadNhanVien
+            // 
+            this.btReloadNhanVien.BackColor = System.Drawing.Color.White;
+            this.btReloadNhanVien.ForeColor = System.Drawing.SystemColors.Window;
+            this.btReloadNhanVien.Image = global::QuanLyCHSach.Properties.Resources.refres2;
+            this.btReloadNhanVien.Location = new System.Drawing.Point(963, 210);
+            this.btReloadNhanVien.Name = "btReloadNhanVien";
+            this.btReloadNhanVien.Size = new System.Drawing.Size(40, 24);
+            this.btReloadNhanVien.TabIndex = 155;
+            this.btReloadNhanVien.UseVisualStyleBackColor = false;
+            this.btReloadNhanVien.Click += new System.EventHandler(this.btReloadNhanVien_Click);
             // 
             // label26
             // 
@@ -310,14 +322,14 @@
             this.btSuaNhanVien.UseVisualStyleBackColor = true;
             this.btSuaNhanVien.Click += new System.EventHandler(this.btSuaNhanVien_Click);
             // 
-            // tbTimNhanVien
+            // tbTimKiemTenNhanVien
             // 
-            this.tbTimNhanVien.Location = new System.Drawing.Point(599, 210);
-            this.tbTimNhanVien.Margin = new System.Windows.Forms.Padding(2);
-            this.tbTimNhanVien.Name = "tbTimNhanVien";
-            this.tbTimNhanVien.Size = new System.Drawing.Size(359, 24);
-            this.tbTimNhanVien.TabIndex = 112;
-            this.tbTimNhanVien.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTimKiemTenNhanVien.Location = new System.Drawing.Point(599, 210);
+            this.tbTimKiemTenNhanVien.Margin = new System.Windows.Forms.Padding(2);
+            this.tbTimKiemTenNhanVien.Name = "tbTimKiemTenNhanVien";
+            this.tbTimKiemTenNhanVien.Size = new System.Drawing.Size(359, 24);
+            this.tbTimKiemTenNhanVien.TabIndex = 112;
+            this.tbTimKiemTenNhanVien.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbDiaChiNhanVien
             // 
@@ -474,6 +486,18 @@
             this.tpTaikhoan.TabIndex = 3;
             this.tpTaikhoan.Text = "Tài khoản";
             this.tpTaikhoan.UseVisualStyleBackColor = true;
+            // 
+            // btReloadTaiKhoan
+            // 
+            this.btReloadTaiKhoan.BackColor = System.Drawing.Color.White;
+            this.btReloadTaiKhoan.ForeColor = System.Drawing.SystemColors.Window;
+            this.btReloadTaiKhoan.Image = global::QuanLyCHSach.Properties.Resources.refres2;
+            this.btReloadTaiKhoan.Location = new System.Drawing.Point(918, 197);
+            this.btReloadTaiKhoan.Name = "btReloadTaiKhoan";
+            this.btReloadTaiKhoan.Size = new System.Drawing.Size(40, 24);
+            this.btReloadTaiKhoan.TabIndex = 155;
+            this.btReloadTaiKhoan.UseVisualStyleBackColor = false;
+            this.btReloadTaiKhoan.Click += new System.EventHandler(this.btReloadTaiKhoan_Click);
             // 
             // tbIdTaiKhoan
             // 
@@ -675,7 +699,7 @@
             this.tpNXB.Controls.Add(this.label19);
             this.tpNXB.Controls.Add(this.tbIdNhaXuatBan);
             this.tpNXB.Controls.Add(this.label29);
-            this.tpNXB.Controls.Add(this.textBox8);
+            this.tpNXB.Controls.Add(this.tbTimKiemTenNXB);
             this.tpNXB.Controls.Add(this.tbTenNhaXuatBan);
             this.tpNXB.Controls.Add(this.tbDiaChiNxb);
             this.tpNXB.Controls.Add(this.btTimKiemNhaXuatBan);
@@ -692,6 +716,18 @@
             this.tpNXB.TabIndex = 2;
             this.tpNXB.Text = "Nhà xuất bản";
             this.tpNXB.UseVisualStyleBackColor = true;
+            // 
+            // btReloadNxb
+            // 
+            this.btReloadNxb.BackColor = System.Drawing.Color.White;
+            this.btReloadNxb.ForeColor = System.Drawing.SystemColors.Window;
+            this.btReloadNxb.Image = global::QuanLyCHSach.Properties.Resources.refres2;
+            this.btReloadNxb.Location = new System.Drawing.Point(949, 177);
+            this.btReloadNxb.Name = "btReloadNxb";
+            this.btReloadNxb.Size = new System.Drawing.Size(40, 24);
+            this.btReloadNxb.TabIndex = 155;
+            this.btReloadNxb.UseVisualStyleBackColor = false;
+            this.btReloadNxb.Click += new System.EventHandler(this.btReloadNxb_Click);
             // 
             // label19
             // 
@@ -723,14 +759,14 @@
             this.label29.Text = "Mã nhà xuất bản";
             this.label29.Visible = false;
             // 
-            // textBox8
+            // tbTimKiemTenNXB
             // 
-            this.textBox8.Location = new System.Drawing.Point(664, 177);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(278, 24);
-            this.textBox8.TabIndex = 118;
-            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTimKiemTenNXB.Location = new System.Drawing.Point(664, 177);
+            this.tbTimKiemTenNXB.Margin = new System.Windows.Forms.Padding(2);
+            this.tbTimKiemTenNXB.Name = "tbTimKiemTenNXB";
+            this.tbTimKiemTenNXB.Size = new System.Drawing.Size(278, 24);
+            this.tbTimKiemTenNXB.TabIndex = 118;
+            this.tbTimKiemTenNXB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbTenNhaXuatBan
             // 
@@ -854,6 +890,18 @@
             this.tpTheloai.TabIndex = 1;
             this.tpTheloai.Text = "Thể loại sách";
             this.tpTheloai.UseVisualStyleBackColor = true;
+            // 
+            // btReloadTheLoai
+            // 
+            this.btReloadTheLoai.BackColor = System.Drawing.Color.White;
+            this.btReloadTheLoai.ForeColor = System.Drawing.SystemColors.Window;
+            this.btReloadTheLoai.Image = global::QuanLyCHSach.Properties.Resources.refres2;
+            this.btReloadTheLoai.Location = new System.Drawing.Point(949, 174);
+            this.btReloadTheLoai.Name = "btReloadTheLoai";
+            this.btReloadTheLoai.Size = new System.Drawing.Size(40, 24);
+            this.btReloadTheLoai.TabIndex = 154;
+            this.btReloadTheLoai.UseVisualStyleBackColor = false;
+            this.btReloadTheLoai.Click += new System.EventHandler(this.btReloadTheLoai_Click);
             // 
             // label27
             // 
@@ -1013,6 +1061,18 @@
             this.tpSach.TabIndex = 0;
             this.tpSach.Text = "Sách";
             this.tpSach.UseVisualStyleBackColor = true;
+            // 
+            // btReload
+            // 
+            this.btReload.BackColor = System.Drawing.Color.White;
+            this.btReload.ForeColor = System.Drawing.SystemColors.Window;
+            this.btReload.Image = global::QuanLyCHSach.Properties.Resources.refres2;
+            this.btReload.Location = new System.Drawing.Point(1006, 171);
+            this.btReload.Name = "btReload";
+            this.btReload.Size = new System.Drawing.Size(40, 24);
+            this.btReload.TabIndex = 153;
+            this.btReload.UseVisualStyleBackColor = false;
+            this.btReload.Click += new System.EventHandler(this.btReload_Click);
             // 
             // cbTimKiem
             // 
@@ -1294,66 +1354,6 @@
             this.tcAdmin.Size = new System.Drawing.Size(1247, 723);
             this.tcAdmin.TabIndex = 0;
             // 
-            // btReload
-            // 
-            this.btReload.BackColor = System.Drawing.Color.White;
-            this.btReload.ForeColor = System.Drawing.SystemColors.Window;
-            this.btReload.Image = global::QuanLyCHSach.Properties.Resources.refres2;
-            this.btReload.Location = new System.Drawing.Point(1006, 171);
-            this.btReload.Name = "btReload";
-            this.btReload.Size = new System.Drawing.Size(40, 24);
-            this.btReload.TabIndex = 153;
-            this.btReload.UseVisualStyleBackColor = false;
-            this.btReload.Click += new System.EventHandler(this.btReload_Click);
-            // 
-            // btReloadTheLoai
-            // 
-            this.btReloadTheLoai.BackColor = System.Drawing.Color.White;
-            this.btReloadTheLoai.ForeColor = System.Drawing.SystemColors.Window;
-            this.btReloadTheLoai.Image = global::QuanLyCHSach.Properties.Resources.refres2;
-            this.btReloadTheLoai.Location = new System.Drawing.Point(949, 174);
-            this.btReloadTheLoai.Name = "btReloadTheLoai";
-            this.btReloadTheLoai.Size = new System.Drawing.Size(40, 24);
-            this.btReloadTheLoai.TabIndex = 154;
-            this.btReloadTheLoai.UseVisualStyleBackColor = false;
-            this.btReloadTheLoai.Click += new System.EventHandler(this.btReloadTheLoai_Click);
-            // 
-            // btReloadNxb
-            // 
-            this.btReloadNxb.BackColor = System.Drawing.Color.White;
-            this.btReloadNxb.ForeColor = System.Drawing.SystemColors.Window;
-            this.btReloadNxb.Image = global::QuanLyCHSach.Properties.Resources.refres2;
-            this.btReloadNxb.Location = new System.Drawing.Point(949, 177);
-            this.btReloadNxb.Name = "btReloadNxb";
-            this.btReloadNxb.Size = new System.Drawing.Size(40, 24);
-            this.btReloadNxb.TabIndex = 155;
-            this.btReloadNxb.UseVisualStyleBackColor = false;
-            this.btReloadNxb.Click += new System.EventHandler(this.btReloadNxb_Click);
-            // 
-            // btReloadTaiKhoan
-            // 
-            this.btReloadTaiKhoan.BackColor = System.Drawing.Color.White;
-            this.btReloadTaiKhoan.ForeColor = System.Drawing.SystemColors.Window;
-            this.btReloadTaiKhoan.Image = global::QuanLyCHSach.Properties.Resources.refres2;
-            this.btReloadTaiKhoan.Location = new System.Drawing.Point(918, 197);
-            this.btReloadTaiKhoan.Name = "btReloadTaiKhoan";
-            this.btReloadTaiKhoan.Size = new System.Drawing.Size(40, 24);
-            this.btReloadTaiKhoan.TabIndex = 155;
-            this.btReloadTaiKhoan.UseVisualStyleBackColor = false;
-            this.btReloadTaiKhoan.Click += new System.EventHandler(this.btReloadTaiKhoan_Click);
-            // 
-            // btReloadNhanVien
-            // 
-            this.btReloadNhanVien.BackColor = System.Drawing.Color.White;
-            this.btReloadNhanVien.ForeColor = System.Drawing.SystemColors.Window;
-            this.btReloadNhanVien.Image = global::QuanLyCHSach.Properties.Resources.refres2;
-            this.btReloadNhanVien.Location = new System.Drawing.Point(963, 210);
-            this.btReloadNhanVien.Name = "btReloadNhanVien";
-            this.btReloadNhanVien.Size = new System.Drawing.Size(40, 24);
-            this.btReloadNhanVien.TabIndex = 155;
-            this.btReloadNhanVien.UseVisualStyleBackColor = false;
-            this.btReloadNhanVien.Click += new System.EventHandler(this.btReloadNhanVien_Click);
-            // 
             // fAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1361,6 +1361,7 @@
             this.ClientSize = new System.Drawing.Size(1275, 747);
             this.Controls.Add(this.tcAdmin);
             this.Name = "fAdmin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Admin";
             this.Load += new System.EventHandler(this.fAdmin_Load);
             this.tpDoanhthu.ResumeLayout(false);
@@ -1401,7 +1402,7 @@
         private System.Windows.Forms.Button btXoaNhanVien;
         private System.Windows.Forms.Button btThemNhanVien;
         private System.Windows.Forms.Button btSuaNhanVien;
-        private System.Windows.Forms.TextBox tbTimNhanVien;
+        private System.Windows.Forms.TextBox tbTimKiemTenNhanVien;
         private System.Windows.Forms.TextBox tbDiaChiNhanVien;
         private System.Windows.Forms.TextBox tbSdt;
         private System.Windows.Forms.TextBox tbIdNhanVien;
@@ -1432,7 +1433,7 @@
         private System.Windows.Forms.DataGridView dtgvTaiKhoan;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TabPage tpNXB;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox tbTimKiemTenNXB;
         private System.Windows.Forms.TextBox tbTenNhaXuatBan;
         private System.Windows.Forms.TextBox tbDiaChiNxb;
         private System.Windows.Forms.Button btTimKiemNhaXuatBan;

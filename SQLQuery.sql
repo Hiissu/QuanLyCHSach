@@ -63,11 +63,12 @@ create table HoaDon
 (
 id int identity(1,1)  primary key,
 ngaylap date ,
+tongtien int,
 id_nhanvien int,
 foreign key (id_nhanvien) references Nhanvien(id)
 )
 
-alter table HoaDon add tongtien int
+-- alter table HoaDon add tongtien int
 
 
 create table CTHD
@@ -82,23 +83,22 @@ foreign key (id_hoadon) references HoaDon(id)
 
 
 
-SELECT s.id, s.ten, s.tacgia, s.ngayxuatban, s.soluong, s.dongia, tl.ten as tentheloai, nxb.ten as tennxb FROM dbo.Sach as s 
-                INNER JOIN dbo.TheLoai as tl ON s.id_theloai = tl.id
-                INNER JOIN dbo.NhaXuatBan as nxb ON s.id_nhaxuatban = nxb.id
+-- SELECT s.id, s.ten, s.tacgia, s.ngayxuatban, s.soluong, s.dongia, tl.ten as tentheloai, nxb.ten as tennxb FROM dbo.Sach as s 
+--                 INNER JOIN dbo.TheLoai as tl ON s.id_theloai = tl.id
+--                 INNER JOIN dbo.NhaXuatBan as nxb ON s.id_nhaxuatban = nxb.id
 
 
 
-INSERT INTO dbo.CTHD(id_hoadon, id_sach, soluong)  VALUES (IDENT_CURRENT('HoaDon'), IDENT_CURRENT('Sach'), '12')
+-- INSERT INTO dbo.CTHD(id_hoadon, id_sach, soluong)  VALUES (IDENT_CURRENT('HoaDon'), IDENT_CURRENT('Sach'), '12')
 
-SELECT * FROM dbo.HoaDon WHERE ngaylap >= '09-09-2020' AND ngaylap <='25-09-2020'
+-- SELECT * FROM dbo.HoaDon WHERE ngaylap >= '09-09-2020' AND ngaylap <='25-09-2020'
 
-SELECT hd.ngaylap, hd.id_nhanvien , COUNT(tt.thanhtien)  as tongtien FROM HoaDon as hd, CTHD as ct, Sach as s 
-where hd.id = ct.id_hoadon and ct.id_sach = s.id  
+-- SELECT hd.ngaylap, hd.id_nhanvien , COUNT(tt.thanhtien)  as tongtien FROM HoaDon as hd, CTHD as ct, Sach as s 
+-- where hd.id = ct.id_hoadon and ct.id_sach = s.id  
 
-INNER JOIN CTHD as cthd ON hd.id = cthd.id_hoadon
-INNER JOIN Sach as s ON cthd.id_sach = s.id  
-INNER JOIN (select s.dongia * cthd.soluong as thanhtien, cthd.id_hoadon as id  from CTHD as cthd inner join Sach as s on cthd.id_sach = s.id ) as tt ON cthd.id_hoadon = tt.id 
+-- INNER JOIN CTHD as cthd ON hd.id = cthd.id_hoadon
+-- INNER JOIN Sach as s ON cthd.id_sach = s.id  
+-- INNER JOIN (select s.dongia * cthd.soluong as thanhtien, cthd.id_hoadon as id  from CTHD as cthd inner join Sach as s on cthd.id_sach = s.id ) as tt ON cthd.id_hoadon = tt.id 
 
 
 
---COUNT(select s.dongia * cthd.soluong  from CTHD as cthd inner join Sach as s on cthd.id_sach = s.id)  as tongtien FROM HoaDon as hd 
