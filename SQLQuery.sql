@@ -1,6 +1,6 @@
 create database QLyCHSach
 
-create table Chucvu
+create table ChucVu
 (
 id  int identity(1,1)   primary key,
 ten nvarchar(100) 

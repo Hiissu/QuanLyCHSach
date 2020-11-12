@@ -37,12 +37,42 @@ namespace QuanLyCHSach
                 return dtable;
             }
         }
+        public bool KiemTraNXB(string tenNXB)
+        {
+            DataTable dtable = new DataTable();
+            dtable = null;
+
+            string truyvan = $"SELECT * FROM dbo.NhaXuatBan WHERE ten = N'{tenNXB}' ";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+
+            try
+            {
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
+
+                return dtable.Rows.Count > 0;
+
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+
+        }
         public DataTable TimKiem(string st)
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = $"SELECT * FROM dbo.NhaXuatBan  WHERE ten LIKE '%{st}%'";
+            string truyvan = $"SELECT * FROM dbo.NhaXuatBan  WHERE ten LIKE N'%{st}%'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -68,7 +98,7 @@ namespace QuanLyCHSach
         public void ThemNhaXuatBan(MNhaXuatBan obj)
         {
             string truyvan = $"INSERT INTO [dbo].[NhaXuatBan] ([ten], [diachi]) "
-                           + $"VALUES ('{obj.Ten}', '{obj.Diachi}')";
+                           + $"VALUES (N'{obj.Ten}', N'{obj.Diachi}')";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -89,7 +119,7 @@ namespace QuanLyCHSach
         public void CapNhatNhaXuatBan(MNhaXuatBan obj, object idNhaXuatBan)
         {
             string truyvan = $"UPDATE [dbo].[NhaXuatBan] " +
-                $"SET [ten] = '{obj.Ten}', [diachi] = '{obj.Diachi}' " +
+                $"SET [ten] = N'{obj.Ten}', [diachi] = N'{obj.Diachi}' " +
                 $"WHERE [id] = '{idNhaXuatBan}'";
 
             SqlCommand cmd = new SqlCommand();

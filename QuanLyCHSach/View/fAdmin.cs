@@ -19,7 +19,7 @@ namespace QuanLyCHSach.View
             InitializeComponent();
         }
 
-
+        #region Controllers
         CSach cs = new CSach();
         CTheLoai ctl = new CTheLoai();
         CNhaXuatBan cnxb = new CNhaXuatBan();
@@ -27,29 +27,63 @@ namespace QuanLyCHSach.View
         CNhanVien cnv = new CNhanVien();
         CHoaDon chd = new CHoaDon();
         CCTHD ccthd = new CCTHD();
+        CChucVu ccv = new CChucVu();
+        #endregion
 
         private void fAdmin_Load(object sender, EventArgs e)
         {
             dtpNgayXuatBan.Value = DateTime.Today;
 
             DataTable dts = cs.HienThiTatCaSach();
-            LoadDuLieuSach(dts);
+            if (dts.Rows.Count > 0)
+            {
+                LoadDuLieuSach(dts);
+            }
 
-            DataTable dttl = ctl.HienThiTatCaTheLoai();
-            LoadDuLieuTheLoai(dttl);
+            DataTable dttl = ctl.HienThiTatCaTheLoai(); 
+            if (dttl.Rows.Count > 0)
+            {
+                LoadDuLieuTheLoai(dttl);
+                cbTheLoai.DataSource = dttl;
+                cbTheLoai.DisplayMember = "ten";
+                cbTheLoai.ValueMember = "id";
+            }
 
             DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
-            LoadDuLieuNXB(dtnxb);
+            if (dtnxb.Rows.Count > 0)
+            {
+                LoadDuLieuNXB(dtnxb);
+                cbNhaXuatBan.DataSource = dtnxb;
+                cbNhaXuatBan.DisplayMember = "ten";
+                cbNhaXuatBan.ValueMember = "id";
+
+            }
 
             DataTable dttk = ctk.HienThiTatCaTaiKhoan();
-            LoadDuLieuTaiKhoan(dttk);
+            if (dttk.Rows.Count > 0)
+            {
+                LoadDuLieuTaiKhoan(dttk);
+            }
 
             DataTable dtnv = cnv.HienThiTatCaNhanVien();
-            LoadDuLieuNhanVien(dtnv);
+            if (dtnv.Rows.Count > 0)
+            {
+                LoadDuLieuNhanVien(dtnv);
+            }
 
             DataTable data = chd.HienThiHoaDon(dtpTuNgay.Value, dtpDenNgay.Value);
-            LoadDuLieuHoaDon(data);
+            if (data.Rows.Count > 0)
+            {
+                LoadDuLieuHoaDon(data);
+            }
 
+            DataTable dtcv = ccv.HienThiTatCaChucVu();
+            if (dtcv.Rows.Count > 0)
+            {
+                cbChucVu.DataSource = dtcv;
+                cbChucVu.DisplayMember = "ten";
+                cbChucVu.ValueMember = "id";
+            }
 
             Dictionary<string, string> dicTimKiem = new Dictionary<string, string>();
             dicTimKiem.Add("s.ten", "Tên sách");
@@ -61,12 +95,12 @@ namespace QuanLyCHSach.View
             cbTimKiem.DisplayMember = "Value";
             cbTimKiem.ValueMember = "Key";
 
-            Dictionary<int, string> cbSourceChucVu = new Dictionary<int, string>();
-            cbSourceChucVu.Add(1, "Nhân viên");
-            cbSourceChucVu.Add(2, "Quản lý");
-            cbChucVu.DataSource = new BindingSource(cbSourceChucVu, null);
-            cbChucVu.DisplayMember = "Value";
-            cbChucVu.ValueMember = "Key";
+            //Dictionary<int, string> cbSourceChucVu = new Dictionary<int, string>();
+            //cbSourceChucVu.Add(1, "Nhân viên");
+            //cbSourceChucVu.Add(2, "Quản lý");
+            //cbChucVu.DataSource = new BindingSource(cbSourceChucVu, null);
+            //cbChucVu.DisplayMember = "Value";
+            //cbChucVu.ValueMember = "Key";
 
             Dictionary<bool, string> cbSource = new Dictionary<bool, string>();
             cbSource.Add(false, "Nhân viên");
@@ -78,9 +112,6 @@ namespace QuanLyCHSach.View
             dtpTuNgay.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpDenNgay.Value = dtpTuNgay.Value.AddMonths(1).AddDays(-1);
         }
-
-
-
 
         #region Sach
 
@@ -95,66 +126,91 @@ namespace QuanLyCHSach.View
             DataTable dts = cs.HienThiTatCaSach();
             LoadDuLieuSach(dts);
         }
-        private void LoadDuLieuSach(DataTable data)   
+
+        private void cbTheLoai_Click(object sender, EventArgs e)
         {
-            List<MSach> ls = new List<MSach>();
-            foreach (DataRow r in data.Rows)
-            {
-                MSach m = new MSach();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Ten = r["ten"].ToString();
-                m.Tacgia = r["tacgia"].ToString();
-                m.Tentheloai = r["tentheloai"].ToString();
-                m.Ngayxuatban = DateTime.Parse(r["ngayxuatban"].ToString());
-                m.Tennhaxuatban = r["tennhaxuatban"].ToString();
-                m.Soluong = int.Parse(r["soluong"].ToString());
-                m.Dongia = double.Parse(r["dongia"].ToString());
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên", typeof(String));
-                tb.Columns.Add("Tác giả", typeof(String));
-                tb.Columns.Add("Thể loại", typeof(String));
-                tb.Columns.Add("Ngày xuất bản", typeof(string));
-                tb.Columns.Add("Nhà xuất bản", typeof(String));
-                tb.Columns.Add("Số lượng", typeof(int));
-                tb.Columns.Add("Đơn giá", typeof(double));
-                int tt = 0;
-                foreach (MSach m in ls)
-                {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên"] = m.Ten;
-                    r["Tác giả"] = m.Tacgia;
-                    r["Thể loại"] = m.Tentheloai;
-                    r["Ngày xuất bản"] = m.Ngayxuatban.ToString("dd-MM-yyyy");
-                    r["Nhà xuất bản"] = m.Tennhaxuatban;
-                    r["Số lượng"] = m.Soluong;
-                    r["Đơn giá"] = m.Dongia;
-
-                    tb.Rows.Add(r);
-                }
-                dtgvSach.DataSource = tb;
-                dtgvSach.Columns["Id"].Visible = false;
-            }
-            DataTable dttl = ctl.HienThiTatCaTheLoai();
-            
-            cbTheLoai.DataSource = dttl;
+            cbTheLoai.DataSource = ctl.HienThiTatCaTheLoai();
             cbTheLoai.DisplayMember = "ten";
             cbTheLoai.ValueMember = "id";
-
-            DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
-            cbNhaXuatBan.DataSource = dtnxb;
+        }
+        
+        private void cbNhaXuatBan_Click(object sender, EventArgs e)
+        {
+            cbNhaXuatBan.DataSource = cnxb.HienThiTatCaNhaXuatBan();
             cbNhaXuatBan.DisplayMember = "ten";
             cbNhaXuatBan.ValueMember = "id";
         }
+        
+        private void LoadDuLieuSach(DataTable data)
+        {
+            try
+            {
+                List<MSach> ls = new List<MSach>();
+                foreach (DataRow r in data.Rows)
+                {
+                    MSach m = new MSach();
+                    m.Id = int.Parse(r["id"].ToString());
+                    m.Ten = r["ten"].ToString();
+                    m.Tacgia = r["tacgia"].ToString();
+                    m.Tentheloai = r["tentheloai"].ToString();
+                    m.Ngayxuatban = DateTime.Parse(r["ngayxuatban"].ToString());
+                    m.Tennhaxuatban = r["tennhaxuatban"].ToString();
+                    m.Soluong = int.Parse(r["soluong"].ToString());
+                    m.Dongia = double.Parse(r["dongia"].ToString());
+                    ls.Add(m);
+                }
+
+                if (ls.Count != 0)
+                {
+                    DataTable tb = new DataTable();
+                    tb.Columns.Add("Id", typeof(String));
+                    tb.Columns.Add("TT", typeof(int));
+                    tb.Columns.Add("Tên", typeof(String));
+                    tb.Columns.Add("Tác giả", typeof(String));
+                    tb.Columns.Add("Thể loại", typeof(String));
+                    tb.Columns.Add("Ngày xuất bản", typeof(string));
+                    tb.Columns.Add("Nhà xuất bản", typeof(String));
+                    tb.Columns.Add("Số lượng", typeof(int));
+                    tb.Columns.Add("Đơn giá", typeof(double));
+                    int tt = 0;
+                    foreach (MSach m in ls)
+                    {
+                        tt++;
+                        DataRow r = tb.NewRow();
+                        r["Id"] = m.Id.ToString();
+                        r["TT"] = tt.ToString();
+                        r["Tên"] = m.Ten;
+                        r["Tác giả"] = m.Tacgia;
+                        r["Thể loại"] = m.Tentheloai;
+                        r["Ngày xuất bản"] = m.Ngayxuatban.ToString("dd-MM-yyyy");
+                        r["Nhà xuất bản"] = m.Tennhaxuatban;
+                        r["Số lượng"] = m.Soluong;
+                        r["Đơn giá"] = m.Dongia;
+
+                        tb.Rows.Add(r);
+                    }
+                    dtgvSach.DataSource = tb;
+                    dtgvSach.Columns["Id"].Visible = false;
+                }
+                DataTable dttl = ctl.HienThiTatCaTheLoai();
+
+                cbTheLoai.DataSource = dttl;
+                cbTheLoai.DisplayMember = "ten";
+                cbTheLoai.ValueMember = "id";
+
+                DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                cbNhaXuatBan.DataSource = dtnxb;
+                cbNhaXuatBan.DisplayMember = "ten";
+                cbNhaXuatBan.ValueMember = "id";
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
+           
+        }
+        
         private void btThem_Click(object sender, EventArgs e)
         {
             
@@ -162,20 +218,26 @@ namespace QuanLyCHSach.View
             {
                 try
                 {
-                    MSach ms = new MSach();
-                    ms.Ten = tbTenSach.Text;
-                    ms.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
-                    ms.Tacgia = tbTacGia.Text;
-                    ms.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value.ToString("dd-MM-yyyy"));
-                    ms.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
-                    ms.Dongia = Convert.ToDouble(nudDonGia.Value);
-                    ms.Soluong = Convert.ToInt32(nudSoLuong.Value);
-                    cs.ThemSach(ms);
-                    XoaDuLieuTabPageSach();
+                    if (!cs.KiemTraSach(tbTenSach.Text))
+                    {
+                        MSach ms = new MSach();
+                        ms.Ten = tbTenSach.Text;
+                        ms.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
+                        ms.Tacgia = tbTacGia.Text;
+                        ms.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value.ToString("dd-MM-yyyy"));
+                        ms.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
+                        ms.Dongia = Convert.ToDouble(nudDonGia.Value);
+                        ms.Soluong = Convert.ToInt32(nudSoLuong.Value);
+                        cs.ThemSach(ms);
+                        XoaDuLieuTabPageSach();
 
-                    DataTable dts = cs.HienThiTatCaSach();
-                    LoadDuLieuSach(dts);
-
+                        DataTable dts = cs.HienThiTatCaSach();
+                        LoadDuLieuSach(dts);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                    }
                 }
                 catch (Exception)
                 {
@@ -191,20 +253,28 @@ namespace QuanLyCHSach.View
             {
                 try
                 {
-                    MSach mss = new MSach();
-                    mss.Id = int.Parse(tbIdSach.Text);
-                    mss.Ten = tbTenSach.Text;
-                    mss.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
-                    mss.Tacgia = tbTacGia.Text;
-                    mss.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value.ToString("dd-MM-yyyy"));
-                    mss.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
-                    mss.Dongia = Convert.ToDouble(nudDonGia.Value);
-                    mss.Soluong = Convert.ToInt32(nudSoLuong.Value);
-                    cs.CapNhatSach(mss, mss.Id);
+                    if (!cs.KiemTraSach(tbTenSach.Text))
+                    {
+                        MSach mss = new MSach();
+                        mss.Id = int.Parse(tbIdSach.Text);
+                        mss.Ten = tbTenSach.Text;
+                        mss.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
+                        mss.Tacgia = tbTacGia.Text;
+                        mss.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value.ToString("dd-MM-yyyy"));
+                        mss.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
+                        mss.Dongia = Convert.ToDouble(nudDonGia.Value);
+                        mss.Soluong = Convert.ToInt32(nudSoLuong.Value);
+                        cs.CapNhatSach(mss, mss.Id);
 
-                    DataTable dts = cs.HienThiTatCaSach();
-                    LoadDuLieuSach(dts);
-                    XoaDuLieuTabPageSach();
+                        DataTable dts = cs.HienThiTatCaSach();
+                        LoadDuLieuSach(dts);
+                        XoaDuLieuTabPageSach();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                    }
+
                 }
                 catch (Exception)
                 {
@@ -258,35 +328,31 @@ namespace QuanLyCHSach.View
             dtpNgayXuatBan.Value = DateTime.Today;
         }
 
-        
-
         private void dtgvSach_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                if (dtgvSach.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+
+                dtgvSach.CurrentRow.Selected = true;
+                tbIdSach.Text = dtgvSach.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                tbTenSach.Text = dtgvSach.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
+
+                //cbTheLoai.Items.Add(dtgvSach.Rows[e.RowIndex].Cells["Thể loại"].FormattedValue.ToString());
+                //cbTheLoai.SelectedItem = cbTheLoai.Items[0];
+
+                DataTable dt = cs.HienThiTheoIdSach(tbIdSach.Text);
+                foreach (DataRow r in dt.Rows)
                 {
-                    dtgvSach.CurrentRow.Selected = true;
-                    tbIdSach.Text = dtgvSach.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
-                    tbTenSach.Text = dtgvSach.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
-
-                    //cbTheLoai.Items.Add(dtgvSach.Rows[e.RowIndex].Cells["Thể loại"].FormattedValue.ToString());
-                    //cbTheLoai.SelectedItem = cbTheLoai.Items[0];
-
-                    DataTable dt = cs.HienThiTheoIdSach(tbIdSach.Text);
-                    foreach (DataRow r in dt.Rows)
-                    {
-                        cbTheLoai.SelectedValue = int.Parse(r["id_theloai"].ToString());
-                        cbNhaXuatBan.SelectedValue = int.Parse(r["id_nhaxuatban"].ToString());
-                    }
-
-                    tbTacGia.Text = dtgvSach.Rows[e.RowIndex].Cells["Tác giả"].FormattedValue.ToString();
-
-                    dtpNgayXuatBan.Value = Convert.ToDateTime(dtgvSach.Rows[e.RowIndex].Cells["Ngày xuất bản"].FormattedValue.ToString());
-
-                    nudDonGia.Value = Convert.ToInt32(dtgvSach.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
-                    nudSoLuong.Value = Convert.ToInt32(dtgvSach.Rows[e.RowIndex].Cells["Số lượng"].FormattedValue.ToString());
+                    cbTheLoai.SelectedValue = int.Parse(r["id_theloai"].ToString());
+                    cbNhaXuatBan.SelectedValue = int.Parse(r["id_nhaxuatban"].ToString());
                 }
+
+                tbTacGia.Text = dtgvSach.Rows[e.RowIndex].Cells["Tác giả"].FormattedValue.ToString();
+
+                dtpNgayXuatBan.Value = Convert.ToDateTime(dtgvSach.Rows[e.RowIndex].Cells["Ngày xuất bản"].FormattedValue.ToString());
+
+                nudDonGia.Value = Convert.ToInt32(dtgvSach.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
+                nudSoLuong.Value = Convert.ToInt32(dtgvSach.Rows[e.RowIndex].Cells["Số lượng"].FormattedValue.ToString());
             }
             catch (Exception)
             {
@@ -305,6 +371,7 @@ namespace QuanLyCHSach.View
             tbIdTheLoai.Text = "";
             tbTenTheLoai.Text = "";
         }
+        
         private void btTimKiemTheLoai_Click(object sender, EventArgs e)
         {
             DataTable data = ctl.TimKiem(tbTimKiemTenTheLoai.Text);
@@ -319,37 +386,47 @@ namespace QuanLyCHSach.View
 
         private void LoadDuLieuTheLoai(DataTable data)
         {
-            List<MTheLoai> ls = new List<MTheLoai>();
-            foreach (DataRow r in data.Rows)
+            try
             {
-                MTheLoai m = new MTheLoai();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Ten = r["ten"].ToString();
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên", typeof(String));
-                int tt = 0;
-                foreach (MTheLoai m in ls)
+                List<MTheLoai> ls = new List<MTheLoai>();
+                foreach (DataRow r in data.Rows)
                 {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên"] = m.Ten;
-
-                    tb.Rows.Add(r);
+                    MTheLoai m = new MTheLoai();
+                    m.Id = int.Parse(r["id"].ToString());
+                    m.Ten = r["ten"].ToString();
+                    ls.Add(m);
                 }
-                dtgvTheLoai.DataSource = tb;
-                dtgvTheLoai.Columns["Id"].Visible = false;
+
+                if (ls.Count != 0)
+                {
+                    DataTable tb = new DataTable();
+                    tb.Columns.Add("Id", typeof(String));
+                    tb.Columns.Add("TT", typeof(int));
+                    tb.Columns.Add("Tên", typeof(String));
+                    int tt = 0;
+                    foreach (MTheLoai m in ls)
+                    {
+                        tt++;
+                        DataRow r = tb.NewRow();
+                        r["Id"] = m.Id.ToString();
+                        r["TT"] = tt.ToString();
+                        r["Tên"] = m.Ten;
+
+                        tb.Rows.Add(r);
+                    }
+                    dtgvTheLoai.DataSource = tb;
+                    dtgvTheLoai.Columns["Id"].Visible = false;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return;
             }
 
         }
+        
         private void btThemTheLoai_Click(object sender, EventArgs e)
         {
             
@@ -357,16 +434,16 @@ namespace QuanLyCHSach.View
             {
                 try
                 {
-                    ctl.ThemTheLoai(tbTenTheLoai.Text);
-                    XoaDuLieuTabPageTheLoai();
-                    DataTable data = ctl.HienThiTatCaTheLoai();
-                    LoadDuLieuTheLoai(data);
+                    if (!ctl.KiemTraTheLoai(tbTenTheLoai.Text))
+                    {
+                        ctl.ThemTheLoai(tbTenTheLoai.Text);
+                        XoaDuLieuTabPageTheLoai();
+                        DataTable data = ctl.HienThiTatCaTheLoai();
+                        LoadDuLieuTheLoai(data);
+                    }
+                    else
+                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
 
-                    DataTable dttl = ctl.HienThiTatCaTheLoai();
-                    cbTheLoai.DataSource = dttl;
-                    cbTheLoai.DisplayMember = "ten";
-                    cbTheLoai.ValueMember = "id";
-                   
 
                 }
                 catch (Exception)
@@ -379,18 +456,27 @@ namespace QuanLyCHSach.View
 
         private void btSuaTheLoai_Click(object sender, EventArgs e)
         {
+
             if (!String.IsNullOrEmpty(tbIdTheLoai.Text))
             {
-                ctl.CapNhatTheLoai(tbTenTheLoai.Text, int.Parse(tbIdTheLoai.Text));
-                XoaDuLieuTabPageTheLoai();
-                DataTable data = ctl.HienThiTatCaTheLoai();
-                LoadDuLieuTheLoai(data);
+                try
+                {
+                    if (!ctl.KiemTraTheLoai(tbTenTheLoai.Text))
+                    {
+                        ctl.CapNhatTheLoai(tbTenTheLoai.Text, int.Parse(tbIdTheLoai.Text));
+                        XoaDuLieuTabPageTheLoai();
+                        DataTable data = ctl.HienThiTatCaTheLoai();
+                        LoadDuLieuTheLoai(data);
+                    }
+                    else
+                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
 
-
-                DataTable dttl = ctl.HienThiTatCaTheLoai();
-                cbTheLoai.DataSource = dttl;
-                cbTheLoai.DisplayMember = "ten";
-                cbTheLoai.ValueMember = "id";
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                    return;
+                }
             }
             else
             {
@@ -411,12 +497,6 @@ namespace QuanLyCHSach.View
 
                     DataTable data = ctl.HienThiTatCaTheLoai();
                     LoadDuLieuTheLoai(data);
-
-                    DataTable dttl = ctl.HienThiTatCaTheLoai();
-                    cbTheLoai.DataSource = dttl;
-                    cbTheLoai.DisplayMember = "ten";
-                    cbTheLoai.ValueMember = "id";
-
                 }
                 else
                 {
@@ -435,12 +515,10 @@ namespace QuanLyCHSach.View
         {
             try
             {
-                if (dtgvTheLoai.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    dtgvTheLoai.CurrentRow.Selected = true;
-                    tbIdTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
-                    tbTenTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
-                }
+
+                dtgvTheLoai.CurrentRow.Selected = true;
+                tbIdTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                tbTenTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
             }
             catch (Exception)
             {
@@ -471,42 +549,51 @@ namespace QuanLyCHSach.View
             LoadDuLieuNXB(data);
 
         }
+        
         private void LoadDuLieuNXB(DataTable data)
         {
-            List<MNhaXuatBan> ls = new List<MNhaXuatBan>();
-            foreach (DataRow r in data.Rows)
+            try
             {
-                MNhaXuatBan m = new MNhaXuatBan();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Ten = r["ten"].ToString();
-                m.Diachi = r["diachi"].ToString();
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên", typeof(String));
-                tb.Columns.Add("Địa Chỉ", typeof(String));
-                int tt = 0;
-                foreach (MNhaXuatBan m in ls)
+                List<MNhaXuatBan> ls = new List<MNhaXuatBan>();
+                foreach (DataRow r in data.Rows)
                 {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên"] = m.Ten;
-                    r["Địa Chỉ"] = m.Diachi;
-
-                    tb.Rows.Add(r);
+                    MNhaXuatBan m = new MNhaXuatBan();
+                    m.Id = int.Parse(r["id"].ToString());
+                    m.Ten = r["ten"].ToString();
+                    m.Diachi = r["diachi"].ToString();
+                    ls.Add(m);
                 }
-                dtgvNhaXuatBan.DataSource = tb;
-                dtgvNhaXuatBan.Columns["Id"].Visible = false;
-            }
 
+                if (ls.Count != 0)
+                {
+                    DataTable tb = new DataTable();
+                    tb.Columns.Add("Id", typeof(String));
+                    tb.Columns.Add("TT", typeof(int));
+                    tb.Columns.Add("Tên", typeof(String));
+                    tb.Columns.Add("Địa chỉ", typeof(String));
+                    int tt = 0;
+                    foreach (MNhaXuatBan m in ls)
+                    {
+                        tt++;
+                        DataRow r = tb.NewRow();
+                        r["Id"] = m.Id.ToString();
+                        r["TT"] = tt.ToString();
+                        r["Tên"] = m.Ten;
+                        r["Địa chỉ"] = m.Diachi;
+
+                        tb.Rows.Add(r);
+                    }
+                    dtgvNhaXuatBan.DataSource = tb;
+                    dtgvNhaXuatBan.Columns["Id"].Visible = false;
+                }
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
         }
+        
         private void btThemNhaXuatBan_Click(object sender, EventArgs e)
         {
             MNhaXuatBan mnxb = new MNhaXuatBan();
@@ -515,16 +602,18 @@ namespace QuanLyCHSach.View
             {
                 try
                 {
-                    mnxb.Ten = tbTenNhaXuatBan.Text;
-                    mnxb.Diachi = tbDiaChiNxb.Text;
-                    cnxb.ThemNhaXuatBan(mnxb);
-                    XoaDuLieuTabPageNXB();
-                    DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
-                    LoadDuLieuNXB(dtnxb);
+                    if (cnxb.KiemTraNXB(tbTenNhaXuatBan.Text))
+                    {
+                        mnxb.Ten = tbTenNhaXuatBan.Text;
+                        mnxb.Diachi = tbDiaChiNxb.Text;
+                        cnxb.ThemNhaXuatBan(mnxb);
+                        XoaDuLieuTabPageNXB();
+                        DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                        LoadDuLieuNXB(dtnxb);
+                    }
+                    else
+                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
 
-                    cbNhaXuatBan.DataSource = dtnxb;
-                    cbNhaXuatBan.DisplayMember = "ten";
-                    cbNhaXuatBan.ValueMember = "id";
                 }
                 catch (Exception)
                 {
@@ -538,17 +627,28 @@ namespace QuanLyCHSach.View
         {
             if (!String.IsNullOrEmpty(tbIdNhaXuatBan.Text))
             {
-                MNhaXuatBan mnxbb = new MNhaXuatBan();
-                mnxbb.Ten = tbTenTheLoai.Text;
-                cnxb.CapNhatNhaXuatBan(mnxbb, tbIdNhaXuatBan.Text);
-                XoaDuLieuTabPageTheLoai();
+                try
+                {
+                    if (!String.IsNullOrEmpty(tbTenNhaXuatBan.Text))
+                    {
+                        MNhaXuatBan mnxbb = new MNhaXuatBan();
+                        mnxbb.Ten = tbTenNhaXuatBan.Text;
+                        mnxbb.Diachi = tbDiaChiNxb.Text;
+                        cnxb.CapNhatNhaXuatBan(mnxbb, tbIdNhaXuatBan.Text);
+                        XoaDuLieuTabPageTheLoai();
 
-                DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
-                LoadDuLieuNXB(dtnxb);
+                        DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                        LoadDuLieuNXB(dtnxb);
+                    }
+                    else
+                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
 
-                cbNhaXuatBan.DataSource = dtnxb;
-                cbNhaXuatBan.DisplayMember = "ten";
-                cbNhaXuatBan.ValueMember = "id";
+                    return;
+                }
             }
             else
             {
@@ -556,7 +656,6 @@ namespace QuanLyCHSach.View
             }
         }
         
-
         private void btXoaNhaXuatBan_Click(object sender, EventArgs e)
         {
             try
@@ -570,11 +669,6 @@ namespace QuanLyCHSach.View
 
                     DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
                     LoadDuLieuNXB(dtnxb);
-
-                    cbNhaXuatBan.DataSource = dtnxb;
-                    cbNhaXuatBan.DisplayMember = "ten";
-                    cbNhaXuatBan.ValueMember = "id";
-
                 }
                 else
                 {
@@ -589,17 +683,17 @@ namespace QuanLyCHSach.View
                 return;
             }
         }
+        
         private void dtgvNhaXuatBan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                if (dtgvTheLoai.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    dtgvNhaXuatBan.CurrentRow.Selected = true;
-                    tbIdNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
-                    tbTenNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
-                    tbDiaChiNxb.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Địa chỉ"].FormattedValue.ToString();
-                }
+
+                dtgvNhaXuatBan.CurrentRow.Selected = true;
+                tbIdNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                tbTenNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
+                tbDiaChiNxb.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Địa chỉ"].FormattedValue.ToString();
+
             }
             catch (Exception)
             {
@@ -631,58 +725,66 @@ namespace QuanLyCHSach.View
             LoadDuLieuTaiKhoan(dttk);
         }
 
-     
         private void LoadDuLieuTaiKhoan(DataTable data)
         {
-            List<MTaiKhoan> ls = new List<MTaiKhoan>();
-            foreach (DataRow r in data.Rows)
+            try
             {
-                MTaiKhoan m = new MTaiKhoan();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Tendangnhap = r["tendangnhap"].ToString();
-                m.Tenhienthi = r["tenhienthi"].ToString();
-                m.Loaitaikhoan = Convert.ToBoolean(r["loaitaikhoan"].ToString());
-                m.Matkhau = r["matkhau"].ToString();
-                m.Tennhanvien = r["tennhanvien"].ToString();
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên đăng nhập", typeof(String));
-                tb.Columns.Add("Mật khẩu", typeof(String));
-                tb.Columns.Add("Tên hiển thị", typeof(String));
-                tb.Columns.Add("Loại tài khoản", typeof(String));
-                tb.Columns.Add("Nhân viên", typeof(String));
-                int tt = 0;
-                foreach (MTaiKhoan m in ls)
+                List<MTaiKhoan> ls = new List<MTaiKhoan>();
+                foreach (DataRow r in data.Rows)
                 {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên đăng nhập"] = m.Tendangnhap;
-                    r["Mật khẩu"] = m.Matkhau;
-                    r["Tên hiển thị"] = m.Tenhienthi;
-                    bool o = m.Loaitaikhoan;
-                    if (o)
-                        r["Loại tài khoản"] = "Quản lý";
-                    else
-                        r["Loại tài khoản"] = "Nhân viên";
-
-
-                    r["Nhân viên"] = m.Tennhanvien;
-
-                    tb.Rows.Add(r);
+                    MTaiKhoan m = new MTaiKhoan();
+                    m.Id = int.Parse(r["id"].ToString());
+                    m.Tendangnhap = r["tendangnhap"].ToString();
+                    m.Tenhienthi = r["tenhienthi"].ToString();
+                    m.Loaitaikhoan = Convert.ToBoolean(r["loaitaikhoan"].ToString());
+                    m.Matkhau = r["matkhau"].ToString();
+                    m.Tennhanvien = r["tennhanvien"].ToString();
+                    ls.Add(m);
                 }
-                dtgvTaiKhoan.DataSource = tb;
-                dtgvTaiKhoan.Columns["Id"].Visible = false;
 
-                
+                if (ls.Count != 0)
+                {
+                    DataTable tb = new DataTable();
+                    tb.Columns.Add("Id", typeof(String));
+                    tb.Columns.Add("TT", typeof(int));
+                    tb.Columns.Add("Tên đăng nhập", typeof(String));
+                    tb.Columns.Add("Mật khẩu", typeof(String));
+                    tb.Columns.Add("Tên hiển thị", typeof(String));
+                    tb.Columns.Add("Loại tài khoản", typeof(String));
+                    tb.Columns.Add("Nhân viên", typeof(String));
+                    int tt = 0;
+                    foreach (MTaiKhoan m in ls)
+                    {
+                        tt++;
+                        DataRow r = tb.NewRow();
+                        r["Id"] = m.Id.ToString();
+                        r["TT"] = tt.ToString();
+                        r["Tên đăng nhập"] = m.Tendangnhap;
+                        r["Mật khẩu"] = m.Matkhau;
+                        r["Tên hiển thị"] = m.Tenhienthi;
+                        bool o = m.Loaitaikhoan;
+                        if (o)
+                            r["Loại tài khoản"] = "Quản lý";
+                        else
+                            r["Loại tài khoản"] = "Nhân viên";
+
+
+                        r["Nhân viên"] = m.Tennhanvien;
+
+                        tb.Rows.Add(r);
+                    }
+                    dtgvTaiKhoan.DataSource = tb;
+                    dtgvTaiKhoan.Columns["Id"].Visible = false;
+
+
+
+                }
             }
+            catch (Exception)
+            {
+                return;
+            }
+            
         }
 
         private void LoadDuLieuComboboxNhanVien()
@@ -696,17 +798,11 @@ namespace QuanLyCHSach.View
             {
                 int id = int.Parse(r["id"].ToString());
                 string ten = r["ten"].ToString();
-                int o = int.Parse(r["id_chucvu"].ToString());
-                string chucvu = string.Empty;
-                if (o == 1)
-                    chucvu = "Nhân viên";
-                else
-                    chucvu = "Quản lý";
-               
-                string ngaysinh = r["ngaysinh"].ToString();
+                string chucvu = r["chucvu"].ToString();
+                DateTime ngaysinh = Convert.ToDateTime( r["ngaysinh"].ToString());
                 string diachi = r["diachi"].ToString();
 
-                string item = $"Tên: {ten}         |Chức vụ: {chucvu}       |Địa chỉ: {diachi}          |Ngày sinh: {ngaysinh}";
+                string item = $"Tên: {ten}         |Chức vụ: {chucvu}       |Địa chỉ: {diachi}          |Ngày sinh: {ngaysinh.ToString("dd-MM-yyyy")}";
                 dicNhanVien.Add(id, item);
             }
             if (dicNhanVien.Count > 0)
@@ -717,7 +813,6 @@ namespace QuanLyCHSach.View
 
             }
         }
-
 
         private void btThemTaiKhoan_Click(object sender, EventArgs e)
         {
@@ -758,7 +853,6 @@ namespace QuanLyCHSach.View
                 }
             }
         }
-
 
         private void btSuaTaiKhoan_Click(object sender, EventArgs e)
         {
@@ -822,31 +916,31 @@ namespace QuanLyCHSach.View
             }
         }
 
-
         private void dtgvTaiKhoan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                if (dtgvTaiKhoan.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    dtgvTaiKhoan.CurrentRow.Selected = true;
-                    tbIdTaiKhoan.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
-                    tbTenDangNhap.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Tên đăng nhập"].FormattedValue.ToString();
-                    tbTenHienThi.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Tên hiển thị"].FormattedValue.ToString();
-                    tbMatKhau.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Mật khẩu"].FormattedValue.ToString();
-                    //cbLoaiTaiKhoan.SelectedValue = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Loại tài khoản"].FormattedValue.ToString();
-                    //cbNhanVien.SelectedValue = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Nhân viên"].FormattedValue.ToString();
-                    if (dtgvTaiKhoan.Rows[e.RowIndex].Cells["Loại tài khoản"].FormattedValue.ToString() == "Nhân viên")
-                        cbChucVu.SelectedValue = false;
-                    else
-                        cbChucVu.SelectedValue = true;
 
-                    DataTable dt = ctk.HienThiTheoIdTaiKhoan(tbIdTaiKhoan.Text);
-                    foreach (DataRow r in dt.Rows)
-                    {
-                        cbNhanVien.SelectedValue = int.Parse(r["id_nhanvien"].ToString());
-                    }
+                dtgvTaiKhoan.CurrentRow.Selected = true;
+                tbIdTaiKhoan.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                tbTenDangNhap.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Tên đăng nhập"].FormattedValue.ToString();
+                tbTenHienThi.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Tên hiển thị"].FormattedValue.ToString();
+                tbMatKhau.Text = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Mật khẩu"].FormattedValue.ToString();
+                //cbLoaiTaiKhoan.SelectedValue = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Loại tài khoản"].FormattedValue.ToString();
+                //cbNhanVien.SelectedValue = dtgvTaiKhoan.Rows[e.RowIndex].Cells["Nhân viên"].FormattedValue.ToString();
+                if (dtgvTaiKhoan.Rows[e.RowIndex].Cells["Loại tài khoản"].FormattedValue.ToString() == "Nhân viên")
+                    cbLoaiTaiKhoan.SelectedValue = false;
+                else
+                    cbLoaiTaiKhoan.SelectedValue = true;
+
+                DataTable dt = ctk.HienThiTheoIdTaiKhoan(tbIdTaiKhoan.Text);
+                foreach (DataRow r in dt.Rows)
+                {
+                    cbNhanVien.SelectedValue = int.Parse(r["id_nhanvien"].ToString());
                 }
+
+
+
             }
             catch (Exception)
             {
@@ -854,9 +948,8 @@ namespace QuanLyCHSach.View
             }
         }
 
-
         #endregion
-
+     
         #region NhanVien
         private void XoaDuLieuTabPageNhanVien()
         {
@@ -864,6 +957,12 @@ namespace QuanLyCHSach.View
             tbTenNhanVien.Text = "";
             tbDiaChiNhanVien.Text = "";
             tbSdt.Text = "";
+        }
+
+        private void lbQuanLyChucVu_Click(object sender, EventArgs e)
+        {
+            fChucVu f = new fChucVu();
+            f.ShowDialog();
         }
 
         private void btReloadNhanVien_Click(object sender, EventArgs e)
@@ -878,54 +977,78 @@ namespace QuanLyCHSach.View
             LoadDuLieuNhanVien(dtnv);
 
         }
+
+        private void cbChucVu_Click(object sender, EventArgs e)
+        {
+            DataTable data = ccv.HienThiTatCaChucVu();
+            if (data.Rows.Count > 0)
+            {
+                cbChucVu.DataSource = data;
+
+                //cbChucVu.DataSource = DataCbChucVu;
+                cbChucVu.DisplayMember = "ten";
+                cbChucVu.ValueMember = "id";
+            }
+            else
+            {
+                MessageBox.Show("Chưa có dữ liệu chức vụ. Hãy thêm trong quản lý chức vụ.");
+            }
+
+        }
+
         private void LoadDuLieuNhanVien(DataTable data)
         {
-            List<MNhanVien> ls = new List<MNhanVien>();
-            foreach (DataRow r in data.Rows)
+            try
             {
-                MNhanVien m = new MNhanVien();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Ten = r["ten"].ToString();
-                m.Diachi = r["diachi"].ToString();
-                m.Ngaysinh = Convert.ToDateTime( r["ngaysinh"].ToString());
-                m.Sdt = r["sdt"].ToString();
-                m.Id_chucvu = int.Parse(r["id_chucvu"].ToString());
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên", typeof(String));
-                tb.Columns.Add("Địa Chỉ", typeof(String));
-                tb.Columns.Add("Ngày sinh", typeof(string));
-                tb.Columns.Add("Sđt", typeof(String));
-                tb.Columns.Add("Chức vụ", typeof(String));
-                int tt = 0;
-                foreach (MNhanVien m in ls)
+                List<MNhanVien> ls = new List<MNhanVien>();
+                foreach (DataRow r in data.Rows)
                 {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên"] = m.Ten;
-                    r["Địa Chỉ"] = m.Diachi;
-                    r["Ngày sinh"] = m.Ngaysinh.ToString("dd-MM-yyyy");
-                    r["Sđt"] = m.Sdt;
-                    int o = m.Id_chucvu;
-                    if (o == 1)
-                        r["Chức vụ"] = "Nhân viên";
-                    else
-                        r["Chức vụ"] = "Quản lý";
-
-                    tb.Rows.Add(r);
+                    MNhanVien m = new MNhanVien();
+                    m.Id = int.Parse(r["id"].ToString());
+                    m.Ten = r["ten"].ToString();
+                    m.Diachi = r["diachi"].ToString();
+                    m.Ngaysinh = Convert.ToDateTime(r["ngaysinh"].ToString());
+                    m.Sdt = r["sdt"].ToString();
+                    m.Tenchucvu = r["chucvu"].ToString();
+                    ls.Add(m);
                 }
-                dtgvNhanVien.DataSource = tb;
-                dtgvNhanVien.Columns["Id"].Visible = false;
+
+                if (ls.Count != 0)
+                {
+                    DataTable tb = new DataTable();
+                    tb.Columns.Add("Id", typeof(String));
+                    tb.Columns.Add("TT", typeof(int));
+                    tb.Columns.Add("Tên", typeof(String));
+                    tb.Columns.Add("Địa Chỉ", typeof(String));
+                    tb.Columns.Add("Ngày sinh", typeof(string));
+                    tb.Columns.Add("Sđt", typeof(String));
+                    tb.Columns.Add("Chức vụ", typeof(String));
+                    int tt = 0;
+                    foreach (MNhanVien m in ls)
+                    {
+                        tt++;
+                        DataRow r = tb.NewRow();
+                        r["Id"] = m.Id.ToString();
+                        r["TT"] = tt.ToString();
+                        r["Tên"] = m.Ten;
+                        r["Địa Chỉ"] = m.Diachi;
+                        r["Ngày sinh"] = m.Ngaysinh.ToString("dd-MM-yyyy");
+                        r["Sđt"] = m.Sdt;
+                        r["Chức vụ"] = m.Tenchucvu;
+
+                        tb.Rows.Add(r);
+                    }
+                    dtgvNhanVien.DataSource = tb;
+                    dtgvNhanVien.Columns["Id"].Visible = false;
+                }
+                LoadDuLieuComboboxNhanVien();
             }
-            LoadDuLieuComboboxNhanVien();
+            catch (Exception)
+            {
+
+                return;
+            }
+     
         }
 
         private void btThemNhanVien_Click(object sender, EventArgs e)
@@ -1007,30 +1130,28 @@ namespace QuanLyCHSach.View
         {
             try
             {
-                if (dtgvNhanVien.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+
+                dtgvNhanVien.CurrentRow.Selected = true;
+                tbIdNhanVien.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                tbTenNhanVien.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
+                tbSdt.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Sđt"].FormattedValue.ToString();
+                tbDiaChiNhanVien.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Địa chỉ"].FormattedValue.ToString();
+                dtpNgaySinh.Value = Convert.ToDateTime(dtgvNhanVien.Rows[e.RowIndex].Cells["Ngày sinh"].FormattedValue.ToString());
+                cbChucVu.SelectedItem = dtgvNhanVien.Rows[e.RowIndex].Cells["Chức vụ"].FormattedValue.ToString();
+
+
+                DataTable data = cnv.HienThiTheoIdNhanVien(tbIdNhanVien.Text);
+                foreach (DataRow r in data.Rows)
                 {
-                    dtgvNhanVien.CurrentRow.Selected = true;
-                    tbIdNhanVien.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
-                    tbTenNhanVien.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
-                    tbSdt.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Sđt"].FormattedValue.ToString();
-                    tbDiaChiNhanVien.Text = dtgvNhanVien.Rows[e.RowIndex].Cells["Địa chỉ"].FormattedValue.ToString();
-                    dtpNgaySinh.Value = Convert.ToDateTime(dtgvNhanVien.Rows[e.RowIndex].Cells["Ngày sinh"].FormattedValue.ToString());
-
-                    if (dtgvNhanVien.Rows[e.RowIndex].Cells["Chức vụ"].FormattedValue.ToString() == "Nhân viên")
-                        cbChucVu.SelectedValue = 1;
-                    else
-                        cbChucVu.SelectedValue = 2;
+                    cbChucVu.SelectedValue = int.Parse(r["id_chucvu"].ToString());
                 }
-
             }
+
             catch (Exception)
             {
                 return;
             }
         }
-
-
-
 
         #endregion
 
@@ -1038,56 +1159,65 @@ namespace QuanLyCHSach.View
 
         private void LoadDuLieuHoaDon(DataTable data)
         {
-            List<MHoaDon> lhd = new List<MHoaDon>();
-            DataTable dthd = data;
-            foreach (DataRow r in dthd.Rows)
+            try
             {
-                MHoaDon m = new MHoaDon();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Id_nhanvien = int.Parse(r["id_nhanvien"].ToString());
-                m.Tennhanvien = r["tennhanvien"].ToString();
-                m.Ngaylap = Convert.ToDateTime(r["ngaylap"].ToString());
-                m.Tongtien = int.Parse(r["tongtien"].ToString());
-                lhd.Add(m);
-            }
-
-            if (lhd.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Ngày lập", typeof(String));
-                tb.Columns.Add("Nhân viên", typeof(String));
-                tb.Columns.Add("Mã nhân viên", typeof(String));
-                tb.Columns.Add("Tổng tiền", typeof(String));
-                int tt = 0;
-                foreach (MHoaDon m in lhd)
+                List<MHoaDon> lhd = new List<MHoaDon>();
+                DataTable dthd = data;
+                foreach (DataRow r in dthd.Rows)
                 {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Ngày lập"] = m.Ngaylap.ToString("dd-MM-yyyy");
-                    r["Nhân viên"] = m.Tennhanvien;
-                    r["Mã nhân viên"] = m.Id_nhanvien;
-                    r["Tổng tiền"] = m.Tongtien;
-
-                    tb.Rows.Add(r);
+                    MHoaDon m = new MHoaDon();
+                    m.Id = int.Parse(r["id"].ToString());
+                    m.Id_nhanvien = int.Parse(r["id_nhanvien"].ToString());
+                    m.Tennhanvien = r["tennhanvien"].ToString();
+                    m.Ngaylap = Convert.ToDateTime(r["ngaylap"].ToString());
+                    m.Tongtien = int.Parse(r["tongtien"].ToString());
+                    lhd.Add(m);
                 }
-                dtgvDoanhThu.DataSource = tb;
-                dtgvDoanhThu.Columns["Id"].Visible = false;
-            }
 
-            DataTable da = (DataTable)(dtgvDoanhThu.DataSource);
-            int doanhThu = 0;
-            if (data.Rows.Count > 1)
-            {
-                foreach (DataRow r in (da.Rows))
+                if (lhd.Count != 0)
                 {
-                    doanhThu += int.Parse(r["Tổng tiền"].ToString());
+                    DataTable tb = new DataTable();
+                    tb.Columns.Add("Id", typeof(String));
+                    tb.Columns.Add("TT", typeof(int));
+                    tb.Columns.Add("Ngày lập", typeof(String));
+                    tb.Columns.Add("Nhân viên", typeof(String));
+                    tb.Columns.Add("Mã nhân viên", typeof(String));
+                    tb.Columns.Add("Tổng tiền", typeof(String));
+                    int tt = 0;
+                    foreach (MHoaDon m in lhd)
+                    {
+                        tt++;
+                        DataRow r = tb.NewRow();
+                        r["Id"] = m.Id.ToString();
+                        r["TT"] = tt.ToString();
+                        r["Ngày lập"] = m.Ngaylap.ToString("dd-MM-yyyy");
+                        r["Nhân viên"] = m.Tennhanvien;
+                        r["Mã nhân viên"] = m.Id_nhanvien;
+                        r["Tổng tiền"] = m.Tongtien;
+
+                        tb.Rows.Add(r);
+                    }
+                    dtgvDoanhThu.DataSource = tb;
+                    dtgvDoanhThu.Columns["Id"].Visible = false;
                 }
+
+                DataTable da = (DataTable)(dtgvDoanhThu.DataSource);
+                int doanhThu = 0;
+                if (data.Rows.Count > 1)
+                {
+                    foreach (DataRow r in (da.Rows))
+                    {
+                        doanhThu += int.Parse(r["Tổng tiền"].ToString());
+                    }
+                }
+                tbDoanhThu.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", doanhThu);
             }
-            tbDoanhThu.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", doanhThu);
+            catch (Exception)
+            {
+
+                return;
+            }
+            
         }
 
         private void btThongKe_Click(object sender, EventArgs e)
@@ -1104,30 +1234,21 @@ namespace QuanLyCHSach.View
 
             try
             {
-                if (dtgvDoanhThu.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    dtgvDoanhThu.CurrentRow.Selected = true;
+                dtgvDoanhThu.CurrentRow.Selected = true;
 
-                    int idHoaDon = int.Parse(dtgvDoanhThu.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString());
-                    fCTHD f = new fCTHD(idHoaDon);
-                    f.ShowDialog();
-
-                }
-
-
-
+                int idHoaDon = int.Parse(dtgvDoanhThu.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString());
+                fCTHD f = new fCTHD(idHoaDon);
+                f.ShowDialog();
             }
             catch (Exception)
             {
                 return;
             }
         }
+
+
         #endregion
 
         
-
-        
-
-       
     }
 }

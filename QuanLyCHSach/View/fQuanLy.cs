@@ -15,11 +15,20 @@ namespace QuanLyCHSach.View
 {
     public partial class fQuanLy : Form
     {
-        public fQuanLy(string tenDangNhap, bool loaiTaiKhoan)
+        public fQuanLy()
         {
             InitializeComponent();
+        
+        }
+        public string tenDangNhap { get; set; }
+        public string tenNhanVien { get; set; }
+        public bool loaiTaiKhoan { get; set; }
 
+
+        private void fQuanLy_Load(object sender, EventArgs e)
+        {
             tbTenDangNhap.Text = tenDangNhap;
+            tbTenNhanVien.Text = tenNhanVien;
             if (!loaiTaiKhoan)
             {
                 tbLoaiTaiKhoan.Text = "Nhân viên";
@@ -31,11 +40,7 @@ namespace QuanLyCHSach.View
                 btQLCHSach.Visible = true;
 
             }
-        }
 
-
-        private void fQuanLy_Load(object sender, EventArgs e)
-        {
             tbNgayLapHoaDon.Text = DateTime.Now.ToString("dd-MM-yyyy");
             LoadDuLieuSach();
             this.ActiveControl = tbTimKiem;
@@ -365,9 +370,11 @@ namespace QuanLyCHSach.View
             }
         }
 
+
         private void thôngTinTàiKhoảnToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fThongTinTaiKhoan f = new fThongTinTaiKhoan(tbTenDangNhap.Text);
+            fThongTinTaiKhoan f = new fThongTinTaiKhoan();
+            f.tenDangNhap = tbTenDangNhap.Text;
             f.ShowDialog();
         }
 

@@ -15,7 +15,9 @@ namespace QuanLyCHSach
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = $"SELECT tendangnhap, loaitaikhoan FROM dbo.TaiKhoan as tk WHERE tendangnhap = '{tenDangNhap}' AND matkhau = '{matKhau}'";
+            string truyvan = $"SELECT tendangnhap, loaitaikhoan, nv.ten as tennhanvien FROM dbo.TaiKhoan as tk " +
+                $"INNER JOIN NhanVien as nv ON tk.id_nhanvien = nv.id " +
+                $"WHERE tendangnhap = '{tenDangNhap}' AND matkhau = '{matKhau}'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -188,7 +190,7 @@ namespace QuanLyCHSach
             {
                 string truyvan = $"INSERT INTO " +
                    $"[dbo].[TaiKhoan]([tendangnhap], [tenhienthi], [matkhau], [loaitaikhoan], [id_nhanvien]) " +
-                   $"VALUES (N'{obj.Tendangnhap}', N'{obj.Tenhienthi}', '{obj.Matkhau}', '{obj.Loaitaikhoan}', '{obj.Id_nhanvien}')";
+                   $"VALUES ('{obj.Tendangnhap}', N'{obj.Tenhienthi}', '{obj.Matkhau}', '{obj.Loaitaikhoan}', '{obj.Id_nhanvien}')";
                 
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
@@ -206,13 +208,12 @@ namespace QuanLyCHSach
             return false;
         }
 
-
         public bool CapNhatTaiKhoan(MTaiKhoan obj, object idTaiKhoan)
         {
             if (!KiemTraTaiKhoan(obj.Tendangnhap))
             {
                 string truyvan = $"UPDATE [dbo].[TaiKhoan] " +
-                $"SET [tendangnhap] = N'{obj.Tendangnhap}', [tenhienthi] = N'{obj.Tenhienthi}',  [matkhau] = '{obj.Matkhau}', " +
+                $"SET [tendangnhap] = '{obj.Tendangnhap}', [tenhienthi] = N'{obj.Tenhienthi}',  [matkhau] = '{obj.Matkhau}', " +
                     $"[loaitaikhoan] = '{obj.Loaitaikhoan}', [id_nhanvien] = '{obj.Id_nhanvien}' " +
                 $"WHERE [id] = '{idTaiKhoan}'";
 
@@ -252,7 +253,5 @@ namespace QuanLyCHSach
                 return;
             }
         }
-
-        
     }
 }

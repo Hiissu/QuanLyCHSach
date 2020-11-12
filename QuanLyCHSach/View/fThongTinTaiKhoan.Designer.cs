@@ -162,7 +162,8 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "fThongTinTaiKhoan";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "fThongTinTaiKhoan";
+            this.Text = "Thông tin tài khoản";
+            this.Load += new System.EventHandler(this.fThongTinTaiKhoan_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

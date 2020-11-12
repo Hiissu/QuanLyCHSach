@@ -56,7 +56,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btTimKiem = new System.Windows.Forms.Button();
             this.tbTimKiem = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tbTenNhanVien = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbNgayLapHoaDon = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
@@ -119,7 +119,7 @@
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.btTimKiem);
             this.tabPage1.Controls.Add(this.tbTimKiem);
-            this.tabPage1.Controls.Add(this.textBox4);
+            this.tabPage1.Controls.Add(this.tbTenNhanVien);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.tbNgayLapHoaDon);
             this.tabPage1.Controls.Add(this.label26);
@@ -408,15 +408,15 @@
             this.tbTimKiem.TabIndex = 1;
             this.tbTimKiem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox4
+            // tbTenNhanVien
             // 
-            this.textBox4.Location = new System.Drawing.Point(177, 51);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(536, 24);
-            this.textBox4.TabIndex = 121;
-            this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTenNhanVien.Location = new System.Drawing.Point(177, 51);
+            this.tbTenNhanVien.Margin = new System.Windows.Forms.Padding(2);
+            this.tbTenNhanVien.Name = "tbTenNhanVien";
+            this.tbTenNhanVien.ReadOnly = true;
+            this.tbTenNhanVien.Size = new System.Drawing.Size(536, 24);
+            this.tbTenNhanVien.TabIndex = 121;
+            this.tbTenNhanVien.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label4
             // 
@@ -604,7 +604,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Button btQLCHSach;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tbTenNhanVien;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbNgayLapHoaDon;
         private System.Windows.Forms.Label label5;

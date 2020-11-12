@@ -10,16 +10,15 @@ using System.Windows.Forms;
 
 namespace QuanLyCHSach.View
 {
+
     public partial class fThongTinTaiKhoan : Form
     {
-        public fThongTinTaiKhoan(string tenDangNhap)
+        public fThongTinTaiKhoan()
         {
             InitializeComponent();
-
-            tbTenDangNhap.Text = tenDangNhap;
         }
 
-        
+        public string tenDangNhap { get; set; }
 
         CTaiKhoan ctk = new CTaiKhoan();
         private void lbDoiMatKhau_Click(object sender, EventArgs e)
@@ -76,6 +75,12 @@ namespace QuanLyCHSach.View
             }
             
             
+        }
+
+        private void fThongTinTaiKhoan_Load(object sender, EventArgs e)
+        {
+            tbTenDangNhap.Text = tenDangNhap;
+
         }
     }
 }

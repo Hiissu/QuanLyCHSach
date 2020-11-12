@@ -64,6 +64,7 @@
             this.tbMatKhau.TabIndex = 2;
             this.tbMatKhau.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbMatKhau.UseSystemPasswordChar = true;
+            this.tbMatKhau.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbMatKhau_KeyDown);
             // 
             // label2
             // 

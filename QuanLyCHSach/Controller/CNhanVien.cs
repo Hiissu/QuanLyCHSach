@@ -16,7 +16,8 @@ namespace QuanLyCHSach.Controller
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = "SELECT * FROM dbo.NhanVien ";
+            string truyvan = "SELECT nv.id, nv.ten, nv.diachi, nv.ngaysinh, nv.sdt, cv.ten as chucvu " +
+                "FROM dbo.NhanVien as nv INNER JOIN dbo.ChucVu as cv ON nv.id_chucvu = cv.id";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -38,16 +39,45 @@ namespace QuanLyCHSach.Controller
                 return dtable;
             }
         }
+        
         public DataTable TimKiem(string st)
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = $"SELECT * FROM dbo.NhanVien  WHERE ten LIKE '%{st}%'";
+            string truyvan = $"SELECT * FROM dbo.NhanVien  WHERE ten LIKE N'%{st}%'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = truyvan;
+            try
+            {
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
+
+                return dtable;
+
+            }
+            catch (Exception)
+            {
+
+                return dtable;
+            }
+        }
+        
+        public DataTable HienThiTheoIdNhanVien(String id)
+        {
+            DataTable dtable = new DataTable();
+            dtable = null;
+
+            string truyvan = $"SELECT id_chucvu FROM dbo.NhanVien WHERE id = {id}";
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+
             try
             {
                 DataSet ds = base.DocDuLieu(cmd);
@@ -92,7 +122,7 @@ namespace QuanLyCHSach.Controller
         {
             string truyvan = $"INSERT INTO " +
                $"[dbo].[NhanVien]([ten], [diachi], [ngaysinh], [sdt], [id_chucvu]) " +
-               $"VALUES (N'{obj.Ten}', N'{obj.Diachi}', N'{obj.Ngaysinh}', '{obj.Sdt}', '{obj.Id_chucvu}')";
+               $"VALUES (N'{obj.Ten}', N'{obj.Diachi}', '{obj.Ngaysinh}', '{obj.Sdt}', '{obj.Id_chucvu}')";
 
 
             SqlCommand cmd = new SqlCommand();
@@ -109,7 +139,6 @@ namespace QuanLyCHSach.Controller
                 return;
             }
         }
-
 
         public void CapNhatNhanVien(MNhanVien obj, object idNhanVien)
         {
@@ -132,7 +161,7 @@ namespace QuanLyCHSach.Controller
                 return;
             }
         }
-
+        
         public void XoaNhanVien(int id)
         {
             string truyvan = $"DELETE FROM [dbo].[NhanVien] WHERE [id] = '{id}'";
@@ -152,7 +181,7 @@ namespace QuanLyCHSach.Controller
                 return;
             }
         }
-
+        
         public void XoaTatCaNhanVien()
         {
             string truyvan = "DELETE FROM [dbo].[NhanVien]";

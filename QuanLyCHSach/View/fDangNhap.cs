@@ -26,12 +26,14 @@ namespace QuanLyCHSach.View
             {
                 foreach (DataRow r in dt.Rows)
                 {
-                    fQuanLy f = new fQuanLy(r["tendangnhap"].ToString(), Convert.ToBoolean(r["loaitaikhoan"].ToString()));
+                    fQuanLy f = new fQuanLy();
+                    f.tenDangNhap = r["tendangnhap"].ToString();
+                    f.tenNhanVien = r["tennhanvien"].ToString();
+                    f.loaiTaiKhoan = Convert.ToBoolean(r["loaitaikhoan"].ToString());
                     this.Hide();
                     f.ShowDialog();
                     this.Show();
                 }
-            
             }
             else
             {
@@ -42,6 +44,14 @@ namespace QuanLyCHSach.View
         DataTable Login(string tenDangNhap, string matKhau)
         {
             return ctk.Login(tenDangNhap, matKhau);
+        }
+
+        private void tbMatKhau_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btDangNhap.PerformClick();
+            }
         }
     }
 }

@@ -36,6 +36,7 @@
             this.dtpDenNgay = new System.Windows.Forms.DateTimePicker();
             this.dtpTuNgay = new System.Windows.Forms.DateTimePicker();
             this.tpNhanvien = new System.Windows.Forms.TabPage();
+            this.lbQuanLyChucVu = new System.Windows.Forms.Label();
             this.btReloadNhanVien = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
             this.btTimNhanVien = new System.Windows.Forms.Button();
@@ -229,6 +230,7 @@
             // 
             // tpNhanvien
             // 
+            this.tpNhanvien.Controls.Add(this.lbQuanLyChucVu);
             this.tpNhanvien.Controls.Add(this.btReloadNhanVien);
             this.tpNhanvien.Controls.Add(this.label26);
             this.tpNhanvien.Controls.Add(this.btTimNhanVien);
@@ -256,6 +258,16 @@
             this.tpNhanvien.TabIndex = 4;
             this.tpNhanvien.Text = "Nhân viên";
             this.tpNhanvien.UseVisualStyleBackColor = true;
+            // 
+            // lbQuanLyChucVu
+            // 
+            this.lbQuanLyChucVu.AutoSize = true;
+            this.lbQuanLyChucVu.Location = new System.Drawing.Point(407, 120);
+            this.lbQuanLyChucVu.Name = "lbQuanLyChucVu";
+            this.lbQuanLyChucVu.Size = new System.Drawing.Size(113, 18);
+            this.lbQuanLyChucVu.TabIndex = 156;
+            this.lbQuanLyChucVu.Text = "Quản lý chức vụ";
+            this.lbQuanLyChucVu.Click += new System.EventHandler(this.lbQuanLyChucVu_Click);
             // 
             // btReloadNhanVien
             // 
@@ -351,7 +363,7 @@
             // 
             // tbIdNhanVien
             // 
-            this.tbIdNhanVien.Location = new System.Drawing.Point(191, 22);
+            this.tbIdNhanVien.Location = new System.Drawing.Point(177, 21);
             this.tbIdNhanVien.Margin = new System.Windows.Forms.Padding(2);
             this.tbIdNhanVien.Name = "tbIdNhanVien";
             this.tbIdNhanVien.ReadOnly = true;
@@ -361,7 +373,7 @@
             // 
             // tbTenNhanVien
             // 
-            this.tbTenNhanVien.Location = new System.Drawing.Point(191, 54);
+            this.tbTenNhanVien.Location = new System.Drawing.Point(177, 53);
             this.tbTenNhanVien.Margin = new System.Windows.Forms.Padding(2);
             this.tbTenNhanVien.Name = "tbTenNhanVien";
             this.tbTenNhanVien.Size = new System.Drawing.Size(359, 24);
@@ -408,15 +420,17 @@
             // 
             this.cbChucVu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChucVu.FormattingEnabled = true;
-            this.cbChucVu.Location = new System.Drawing.Point(191, 83);
+            this.cbChucVu.Location = new System.Drawing.Point(177, 82);
             this.cbChucVu.Name = "cbChucVu";
+            this.cbChucVu.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbChucVu.Size = new System.Drawing.Size(359, 26);
             this.cbChucVu.TabIndex = 79;
+            this.cbChucVu.Click += new System.EventHandler(this.cbChucVu_Click);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(111, 91);
+            this.label13.Location = new System.Drawing.Point(97, 90);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(62, 18);
             this.label13.TabIndex = 78;
@@ -425,7 +439,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(82, 25);
+            this.label14.Location = new System.Drawing.Point(68, 24);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(100, 18);
             this.label14.TabIndex = 77;
@@ -435,7 +449,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(82, 57);
+            this.label15.Location = new System.Drawing.Point(68, 56);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(104, 18);
             this.label15.TabIndex = 75;
@@ -1091,6 +1105,7 @@
             this.cbNhaXuatBan.Name = "cbNhaXuatBan";
             this.cbNhaXuatBan.Size = new System.Drawing.Size(410, 26);
             this.cbNhaXuatBan.TabIndex = 91;
+            this.cbNhaXuatBan.Click += new System.EventHandler(this.cbNhaXuatBan_Click);
             // 
             // cbTheLoai
             // 
@@ -1100,6 +1115,7 @@
             this.cbTheLoai.Name = "cbTheLoai";
             this.cbTheLoai.Size = new System.Drawing.Size(410, 26);
             this.cbTheLoai.TabIndex = 90;
+            this.cbTheLoai.Click += new System.EventHandler(this.cbTheLoai_Click);
             // 
             // tbTacGia
             // 
@@ -1350,6 +1366,7 @@
             this.tcAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tcAdmin.Location = new System.Drawing.Point(12, 12);
             this.tcAdmin.Name = "tcAdmin";
+            this.tcAdmin.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tcAdmin.SelectedIndex = 0;
             this.tcAdmin.Size = new System.Drawing.Size(1247, 723);
             this.tcAdmin.TabIndex = 0;
@@ -1496,5 +1513,6 @@
         private System.Windows.Forms.Button btReloadNxb;
         private System.Windows.Forms.Button btReloadTaiKhoan;
         private System.Windows.Forms.Button btReloadNhanVien;
+        private System.Windows.Forms.Label lbQuanLyChucVu;
     }
 }

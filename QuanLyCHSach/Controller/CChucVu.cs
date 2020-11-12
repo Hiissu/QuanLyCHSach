@@ -5,20 +5,17 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QuanLyCHSach.Model;
 
-namespace QuanLyCHSach
+namespace QuanLyCHSach.Controller
 {
-    class CSach : dbConnection
+    class CChucVu :dbConnection
     {
-        public DataTable HienThiTatCaSach()
+        public DataTable HienThiTatCaChucVu()
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = "SELECT s.id, s.ten, s.tacgia, s.ngayxuatban, s.soluong, s.dongia, tl.ten as tentheloai, nxb.ten as tennhaxuatban FROM dbo.Sach as s " +
-                "INNER JOIN dbo.TheLoai as tl ON s.id_theloai = tl.id " +
-                "INNER JOIN dbo.NhaXuatBan as nxb ON s.id_nhaxuatban = nxb.id";
+            string truyvan = "SELECT * FROM dbo.ChucVu ";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -30,22 +27,23 @@ namespace QuanLyCHSach
                 {
                     dtable = ds.Tables[0];
                 }
+
                 return dtable;
+
             }
             catch (Exception)
             {
 
                 return dtable;
             }
-
         }
 
-        public bool KiemTraSach(string tenSach)
+        public bool KiemTraChucVu(string tenChucVu)
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = $"SELECT * FROM dbo.Sach WHERE ten = N'{tenSach}' ";
+            string truyvan = $"SELECT * FROM dbo.ChucVu  WHERE ten = N'{tenChucVu}' ";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -70,14 +68,13 @@ namespace QuanLyCHSach
 
 
         }
-        public DataTable TimKiem(object column, string st)
+
+        public DataTable TimKiem(string st)
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = "SELECT s.id, s.ten, s.tacgia, s.ngayxuatban, s.soluong, s.dongia, tl.ten as tentheloai, nxb.ten as tennhaxuatban FROM dbo.Sach as s " +
-                "INNER JOIN dbo.TheLoai as tl ON s.id_theloai = tl.id " +
-                $"INNER JOIN dbo.NhaXuatBan as nxb ON s.id_nhaxuatban = nxb.id WHERE {column} LIKE N'%{st}%'";
+            string truyvan = $"SELECT * FROM dbo.ChucVu  WHERE ten LIKE N'%{st}%'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -100,60 +97,10 @@ namespace QuanLyCHSach
             }
         }
 
-        public DataTable HienThiTheoIdSach(String id)
+        public void ThemChucVu(string ten)
         {
-            DataTable dtable = new DataTable();
-            dtable = null;
-
-            string truyvan = $"SELECT id_theloai, id_nhaxuatban FROM dbo.Sach WHERE id = {id}";
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
-            try
-            {
-                DataSet ds = base.DocDuLieu(cmd);
-                if (dtable == null && ds.Tables.Count > 0)
-                {
-                    dtable = ds.Tables[0];
-                }
-
-                return dtable;
-
-            }
-            catch (Exception)
-            {
-
-                return dtable;
-
-            }
-        }
-        public void ThemSach(MSach obj)
-        {
-            string truyvan = $"INSERT INTO " +
-               $"[dbo].[Sach]([ten], [tacgia], [id_theloai], [ngayxuatban], [id_nhaxuatban], [soluong], [dongia]) " +
-               $"VALUES (N'{obj.Ten}', N'{obj.Tacgia}', '{obj.Id_theloai}', '{obj.Ngayxuatban}', N'{obj.Id_nhaxuatban}', '{obj.Soluong}', '{obj.Dongia}')";
-
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = truyvan;
-            try
-            {
-                base.GhiDuLieu(cmd);
-
-            }
-            catch (Exception)
-            {
-                return;
-            }
-        }
-
-
-        public void CapNhatSach(MSach obj, object idSach)
-        {
-            string truyvan = $"UPDATE [dbo].[Sach] " +
-                $"SET [ten] = N'{obj.Ten}', [id_theloai] = '{obj.Id_theloai}',  [tacgia] = N'{obj.Tacgia}', [ngayxuatban] = '{obj.Ngayxuatban}', " + 
-                    $"[id_nhaxuatban] = '{obj.Id_nhaxuatban}' , [soluong] = '{obj.Soluong}' , [dongia] = '{obj.Dongia}' " +
-                $"WHERE [id] = '{idSach}'";
+            string truyvan = $"INSERT INTO [dbo].[ChucVu] ([ten]) "
+                           + $"VALUES (N'{ten}')";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -170,9 +117,12 @@ namespace QuanLyCHSach
             }
         }
 
-        public void XoaSach(object idSach)
+
+        public void CapNhatChucVu(string ten, int id)
         {
-            string truyvan = $"DELETE FROM [dbo].[Sach] WHERE [id] = '{idSach}'";
+            string truyvan = $"UPDATE [dbo].[ChucVu] " +
+                $"SET [ten] = N'{ten}' " +
+                $"WHERE [id] = '{id}'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -189,9 +139,28 @@ namespace QuanLyCHSach
             }
         }
 
-        public void XoaTatCaSach()
+        public void XoaChucVu(int id)
         {
-            string truyvan = "DELETE FROM [dbo].[Sach]";
+            string truyvan = $"DELETE FROM [dbo].[ChucVu] WHERE [id] = '{id}'";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
+
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
+        }
+
+        public void XoaTatCaChucVu()
+        {
+            string truyvan = "DELETE FROM [dbo].[ChucVu]";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -199,8 +168,5 @@ namespace QuanLyCHSach
 
             base.GhiDuLieu(cmd);
         }
-
-       
-
     }
 }

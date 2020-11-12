@@ -41,12 +41,43 @@ namespace QuanLyCHSach
             }
         }
 
+        public bool KiemTraTheLoai(string tenTheLoai)
+        {
+            DataTable dtable = new DataTable();
+            dtable = null;
+
+            string truyvan = $"SELECT * FROM dbo.TheLoai  WHERE ten = N'{tenTheLoai}' ";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+
+            try
+            {
+                DataSet ds = base.DocDuLieu(cmd);
+                if (dtable == null && ds.Tables.Count > 0)
+                {
+                    dtable = ds.Tables[0];
+                }
+
+                return dtable.Rows.Count > 0;
+
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+
+        }
+
         public DataTable TimKiem(string st)
         {
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = $"SELECT * FROM dbo.TheLoai  WHERE ten LIKE '%{st}%'";
+            string truyvan = $"SELECT * FROM dbo.TheLoai  WHERE ten LIKE N'%{st}%'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -72,7 +103,7 @@ namespace QuanLyCHSach
         public void ThemTheLoai(string ten)
         {
             string truyvan = $"INSERT INTO [dbo].[TheLoai] ([ten]) " 
-                           + $"VALUES ('{ten}')";
+                           + $"VALUES (N'{ten}')";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;
@@ -93,7 +124,7 @@ namespace QuanLyCHSach
         public void CapNhatTheLoai(string ten, int id)
         {
             string truyvan = $"UPDATE [dbo].[TheLoai] " +
-                $"SET [ten] = '{ten}' " +
+                $"SET [ten] = N'{ten}' " +
                 $"WHERE [id] = '{id}'";
 
             SqlCommand cmd = new SqlCommand();
