@@ -172,9 +172,9 @@
             this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(720, 619);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(84, 18);
+            this.label32.Size = new System.Drawing.Size(80, 18);
             this.label32.TabIndex = 120;
-            this.label32.Text = "Doanh thu: ";
+            this.label32.Text = "Doanh thu:";
             // 
             // tbDoanhThu
             // 
@@ -184,6 +184,7 @@
             this.tbDoanhThu.ReadOnly = true;
             this.tbDoanhThu.Size = new System.Drawing.Size(359, 24);
             this.tbDoanhThu.TabIndex = 119;
+            this.tbDoanhThu.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // dtgvDoanhThu
             // 
@@ -262,11 +263,13 @@
             // lbQuanLyChucVu
             // 
             this.lbQuanLyChucVu.AutoSize = true;
-            this.lbQuanLyChucVu.Location = new System.Drawing.Point(407, 120);
+            this.lbQuanLyChucVu.Image = global::QuanLyCHSach.Properties.Resources.settings1;
+            this.lbQuanLyChucVu.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbQuanLyChucVu.Location = new System.Drawing.Point(387, 120);
             this.lbQuanLyChucVu.Name = "lbQuanLyChucVu";
-            this.lbQuanLyChucVu.Size = new System.Drawing.Size(113, 18);
+            this.lbQuanLyChucVu.Size = new System.Drawing.Size(149, 18);
             this.lbQuanLyChucVu.TabIndex = 156;
-            this.lbQuanLyChucVu.Text = "Quản lý chức vụ";
+            this.lbQuanLyChucVu.Text = "Quản lý chức vụ         ";
             this.lbQuanLyChucVu.Click += new System.EventHandler(this.lbQuanLyChucVu_Click);
             // 
             // btReloadNhanVien
@@ -791,6 +794,7 @@
             this.tbTenNhaXuatBan.TabIndex = 110;
             this.tbTenNhaXuatBan.Tag = "2";
             this.tbTenNhaXuatBan.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTenNhaXuatBan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTenNhaXuatBan_KeyDown);
             // 
             // tbDiaChiNxb
             // 
@@ -956,6 +960,7 @@
             this.tbTenTheLoai.TabIndex = 97;
             this.tbTenTheLoai.Tag = "2";
             this.tbTenTheLoai.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTenTheLoai.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTenTheLoai_KeyDown);
             // 
             // btTimKiemTheLoai
             // 
@@ -1071,6 +1076,7 @@
             this.tpSach.Location = new System.Drawing.Point(4, 27);
             this.tpSach.Name = "tpSach";
             this.tpSach.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSach.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tpSach.Size = new System.Drawing.Size(1239, 692);
             this.tpSach.TabIndex = 0;
             this.tpSach.Text = "Sách";
@@ -1175,6 +1181,7 @@
             this.tbTenSach.Size = new System.Drawing.Size(410, 24);
             this.tbTenSach.TabIndex = 2;
             this.tbTenSach.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTenSach.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTenSach_KeyDown);
             // 
             // label9
             // 
@@ -1366,7 +1373,7 @@
             this.tcAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tcAdmin.Location = new System.Drawing.Point(12, 12);
             this.tcAdmin.Name = "tcAdmin";
-            this.tcAdmin.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.tcAdmin.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tcAdmin.SelectedIndex = 0;
             this.tcAdmin.Size = new System.Drawing.Size(1247, 723);
             this.tcAdmin.TabIndex = 0;

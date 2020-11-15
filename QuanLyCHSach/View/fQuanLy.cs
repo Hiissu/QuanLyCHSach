@@ -21,9 +21,9 @@ namespace QuanLyCHSach.View
         
         }
         public string tenDangNhap { get; set; }
-        public string tenNhanVien { get; set; }
+        public string tenNhanVien { get; set; }   
+        public int idNhanVien { get; set; }
         public bool loaiTaiKhoan { get; set; }
-
 
         private void fQuanLy_Load(object sender, EventArgs e)
         {
@@ -42,7 +42,8 @@ namespace QuanLyCHSach.View
             }
 
             tbNgayLapHoaDon.Text = DateTime.Now.ToString("dd-MM-yyyy");
-            LoadDuLieuSach();
+            DataTable dts = cs.HienThiTatCaSach();
+            LoadDuLieuSach(dts);
             this.ActiveControl = tbTimKiem;
 
             Dictionary<string, string> dicTimKiem = new Dictionary<string, string>();
@@ -77,13 +78,13 @@ namespace QuanLyCHSach.View
 
         private void btReload_Click(object sender, EventArgs e)
         {
-            LoadDuLieuSach();
+            DataTable dts = cs.HienThiTatCaSach();
+            LoadDuLieuSach(dts);
         }
 
-        private void LoadDuLieuSach()
+        private void LoadDuLieuSach(DataTable dts)
         {
             List<MSach> ls = new List<MSach>();
-            DataTable dts = cs.HienThiTatCaSach();
             foreach (DataRow r in dts.Rows)
             {
                 MSach m = new MSach();
@@ -108,7 +109,7 @@ namespace QuanLyCHSach.View
                 tb.Columns.Add("Thể loại", typeof(String));
                 tb.Columns.Add("Ngày xuất bản", typeof(String));
                 tb.Columns.Add("Nhà xuất bản", typeof(String));
-                tb.Columns.Add("Số lượng", typeof(int));
+                tb.Columns.Add("Số lượng trong kho", typeof(int));
                 tb.Columns.Add("Đơn giá", typeof(double));
                 int tt = 0;
                 foreach (MSach m in ls)
@@ -122,7 +123,7 @@ namespace QuanLyCHSach.View
                     r["Thể loại"] = m.Tentheloai;
                     r["Ngày xuất bản"] = m.Ngayxuatban.ToString("dd-MM-yyyy");
                     r["Nhà xuất bản"] = m.Tennhaxuatban;
-                    r["Số lượng"] = m.Soluong;
+                    r["Số lượng trong kho"] = m.Soluong;
                     r["Đơn giá"] = m.Dongia;
 
                     tb.Rows.Add(r);
@@ -131,83 +132,37 @@ namespace QuanLyCHSach.View
                 dtgvTimKiemSach.Columns["Id"].Visible = false;
             }
         }
+        
         private void btTimKiem_Click(object sender, EventArgs e)
         {
             DataTable dts = cs.TimKiem(cbTimKiem.SelectedValue, tbTimKiem.Text);
-
-            List<MSach> ls = new List<MSach>();
-            foreach (DataRow r in dts.Rows)
-            {
-                MSach m = new MSach();
-                m.Id = int.Parse(r["id"].ToString());
-                m.Ten = r["ten"].ToString();
-                m.Tacgia = r["tacgia"].ToString();
-                m.Tentheloai = r["tentheloai"].ToString();
-                m.Ngayxuatban = Convert.ToDateTime(r["ngayxuatban"].ToString());
-                m.Tennhaxuatban = r["tennhaxuatban"].ToString();
-                m.Soluong = int.Parse(r["soluong"].ToString());
-                m.Dongia = double.Parse(r["dongia"].ToString());
-                ls.Add(m);
-            }
-
-            if (ls.Count != 0)
-            {
-                DataTable tb = new DataTable();
-                tb.Columns.Add("Id", typeof(String));
-                tb.Columns.Add("TT", typeof(int));
-                tb.Columns.Add("Tên sách", typeof(String));
-                tb.Columns.Add("Tác giả", typeof(String));
-                tb.Columns.Add("Thể loại", typeof(String));
-                tb.Columns.Add("Ngày xuất bản", typeof(String));
-                tb.Columns.Add("Nhà xuất bản", typeof(String));
-                tb.Columns.Add("Số lượng", typeof(int));
-                tb.Columns.Add("Đơn giá", typeof(double));
-                int tt = 0;
-                foreach (MSach m in ls)
-                {
-                    tt++;
-                    DataRow r = tb.NewRow();
-                    r["Id"] = m.Id.ToString();
-                    r["TT"] = tt.ToString();
-                    r["Tên sách"] = m.Ten;
-                    r["Tác giả"] = m.Tacgia;
-                    r["Thể loại"] = m.Tentheloai;
-                    r["Ngày xuất bản"] = m.Ngayxuatban.ToString("dd-MM-yyyy");
-                    r["Nhà xuất bản"] = m.Tennhaxuatban;
-                    r["Số lượng"] = m.Soluong;
-                    r["Đơn giá"] = m.Dongia;
-
-                    tb.Rows.Add(r);
-                }
-                dtgvTimKiemSach.DataSource = tb;
-                dtgvTimKiemSach.Columns["Id"].Visible = false;
-            }
-
-            
+            LoadDuLieuSach(dts);
         }
 
         private void dtgvTimKiemSach_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                if (dtgvTimKiemSach.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    dtgvTimKiemSach.CurrentRow.Selected = true;
-                    tbIdSach.Text = dtgvTimKiemSach.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
-                    tbTenSach.Text = dtgvTimKiemSach.Rows[e.RowIndex].Cells["Tên sách"].FormattedValue.ToString();
-                    
-                    donGia = int.Parse(dtgvTimKiemSach.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
-                    thanhTien = donGia * nudSoLuong.Value;
-                    
-                    tbDonGia.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", donGia);
-                    tbThanhTien.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", thanhTien);
-                }
+
+                dtgvTimKiemSach.CurrentRow.Selected = true;
+                tbIdSach.Text = dtgvTimKiemSach.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                tbTenSach.Text = dtgvTimKiemSach.Rows[e.RowIndex].Cells["Tên sách"].FormattedValue.ToString();
+
+                donGia = int.Parse(dtgvTimKiemSach.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
+                thanhTien = donGia * nudSoLuong.Value;
+
+                tbDonGia.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", donGia);
+                tbThanhTien.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", thanhTien);
+
+                soHangTrongKho = int.Parse(dtgvTimKiemSach.Rows[e.RowIndex].Cells["Số lượng trong kho"].FormattedValue.ToString());
+
             }
             catch (Exception)
             {
                 return;
             }
         }
+        
         int donGia;
         decimal thanhTien;
         
@@ -221,7 +176,6 @@ namespace QuanLyCHSach.View
 
         }
 
-        
         private void clearTB()
         {
             tbIdSach.Text = "";
@@ -230,10 +184,27 @@ namespace QuanLyCHSach.View
             tbThanhTien.Text = "";
             nudSoLuong.Value = 1;
         }
+
+        int soHangTrongKho;
+        Dictionary<string,  decimal[]> dic = new Dictionary<string, decimal[]>();
         private void btThem_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(tbTenSach.Text))
             {
+                if (nudSoLuong.Value > soHangTrongKho)
+                {
+                    MessageBox.Show($"Số lượng hàng trong kho chỉ còn {soHangTrongKho} quyển sách.");
+                    clearTB();
+                    return;
+                }
+
+                if (dic.ContainsKey(tbTenSach.Text))
+                {
+                    MessageBox.Show($"Bạn đang đặt hàng {dic[tbTenSach.Text][1]} quyển. Hãy sửa lại số lượng nếu vật phẩm trùng lặp");
+                    clearTB();
+                    return;
+                }
+
                 tt++;
                 DataRow r = tb.NewRow();
                 r["TT"] = tt.ToString();
@@ -245,11 +216,15 @@ namespace QuanLyCHSach.View
                 tb.Rows.Add(r);
 
                 dtgvDanhSachVatPham.DataSource = tb;
-                //dtgvDanhSachVatPham.Columns["Mã sách"].Visible = false;
+                dtgvDanhSachVatPham.Columns["TT"].Visible = false;
+
+                dic.Add(tbTenSach.Text, new [] { soHangTrongKho, nudSoLuong.Value});
+
                 clearTB();
                 tinhTien();
             }
         }
+        
         int tongTien;
         private void tinhTien()
         {
@@ -270,8 +245,21 @@ namespace QuanLyCHSach.View
                 {
                     if (int.Parse(r["TT"].ToString()) == soThuTuSelected)
                     {
+                        if (nudSoLuong.Value > soHangTrongKho)
+                        {
+                            MessageBox.Show($"Bạn không thể đặt hàng quá {soHangTrongKho} quyển.");
+                            return;
+                        }
                         r["Số lượng"] = nudSoLuong.Value;
                         r["Thành tiền"] = thanhTien;
+
+                        foreach (KeyValuePair<string, decimal[]> kvp in dic)
+                        {
+                            if (kvp.Key == tbTenSach.Text)
+                            {
+                                dic[kvp.Key][1] =  nudSoLuong.Value;
+                            }
+                        }
 
                         dtgvDanhSachVatPham.DataSource = tb;
                         editMode = false;
@@ -296,6 +284,7 @@ namespace QuanLyCHSach.View
                         editMode = false;
                         clearTB();
                         tinhTien();
+                        dic.Remove(tbTenSach.Text);
                         return;
                     }
                 }
@@ -307,20 +296,18 @@ namespace QuanLyCHSach.View
         {
             try
             {
-                if (dtgvDanhSachVatPham.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    dtgvDanhSachVatPham.CurrentRow.Selected = true;
-                    tbIdSach.Text = dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Mã sách"].FormattedValue.ToString();
-                    tbTenSach.Text = dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Tên sách"].FormattedValue.ToString();
-                    donGia = int.Parse(dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
-                    thanhTien = donGia * nudSoLuong.Value;
-                    tbDonGia.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", donGia);
-                    tbThanhTien.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", thanhTien);
-                    nudSoLuong.Value = int.Parse(dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Số lượng"].FormattedValue.ToString());
 
-                    soThuTuSelected = int.Parse(dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["TT"].FormattedValue.ToString());
-                    editMode = true;
-                }
+                dtgvDanhSachVatPham.CurrentRow.Selected = true;
+                tbIdSach.Text = dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Mã sách"].FormattedValue.ToString();
+                tbTenSach.Text = dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Tên sách"].FormattedValue.ToString();
+                donGia = int.Parse(dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
+                thanhTien = donGia * nudSoLuong.Value;
+                tbDonGia.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", donGia);
+                tbThanhTien.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", thanhTien);
+                nudSoLuong.Value = int.Parse(dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["Số lượng"].FormattedValue.ToString());
+
+                soThuTuSelected = int.Parse(dtgvDanhSachVatPham.Rows[e.RowIndex].Cells["TT"].FormattedValue.ToString());
+                editMode = true;
             }
             catch (Exception)
             {
@@ -328,48 +315,52 @@ namespace QuanLyCHSach.View
             }
         }
 
-      
         private void btLuu_Click(object sender, EventArgs e)
         {
-            DataTable data = (DataTable)(dtgvDanhSachVatPham.DataSource);
-            if (data.Rows.Count > 1)
+            DataTable data = ((DataTable)dtgvDanhSachVatPham.DataSource);
+            if (data.Rows.Count >= 1)
             {
                 try
                 {
                     MHoaDon mhd = new MHoaDon();
-                    mhd.Ngaylap = Convert.ToDateTime(tbNgayLapHoaDon.Text);
-                    //mhd.Id_nhanvien = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
-                    mhd.Id_nhanvien = 1;
-                    mhd.Tongtien = int.Parse(tbTongTien.Text);
+                    mhd.Ngaylap = DateTime.Now.ToString("MM-dd-yyyy");
+                    mhd.Id_nhanvien = idNhanVien;
+                    mhd.Tongtien = tongTien;
                     chd.ThemHoaDon(mhd);
 
-
-                    //List<MCTHD> lcthd = new List<MCTHD>();
                     foreach (DataRow r in data.Rows)
                     {
                         MCTHD m = new MCTHD();
-                        //m.Id = int.Parse(r["id"].ToString());
-                        //m.Id_hoadon = int.Parse(r["id_hoadon"].ToString());
                         m.Id_sach = int.Parse(r["Mã sách"].ToString());
                         m.Soluong = int.Parse(r["Số lượng"].ToString());
                         
                         ccthd.ThemCTHD(m);
-                        //lcthd.Add(m);
+                        cs.CapNhatSoLuongSach(m);
                     }
 
-                    
+                    dic.Clear();
+                    tb.Clear();
+                    tbTongTien.Text = "";
                     MessageBox.Show("Đã lưu hóa đơn!");
+                    DataTable dts = cs.HienThiTatCaSach();
+                    LoadDuLieuSach(dts);
+
                     this.dtgvDanhSachVatPham.DataSource = null;
                     this.dtgvDanhSachVatPham.Rows.Clear();
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                    MessageBox.Show("Có lỗi đã xảy ra.");
                     return;
                 }
             }
-        }
+            else
+            {
+                MessageBox.Show("Bạn cần thêm vật phẩm để thanh toán.");
+                return;
+            }
 
+        }
 
         private void thôngTinTàiKhoảnToolStripMenuItem_Click(object sender, EventArgs e)
         {

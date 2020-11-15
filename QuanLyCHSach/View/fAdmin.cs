@@ -111,6 +111,9 @@ namespace QuanLyCHSach.View
 
             dtpTuNgay.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpDenNgay.Value = dtpTuNgay.Value.AddMonths(1).AddDays(-1);
+
+            DataTable dthd = chd.HienThiHoaDon(dtpTuNgay.Value, dtpDenNgay.Value);
+            LoadDuLieuHoaDon(dthd);
         }
 
         #region Sach
@@ -182,7 +185,7 @@ namespace QuanLyCHSach.View
                         r["Tên"] = m.Ten;
                         r["Tác giả"] = m.Tacgia;
                         r["Thể loại"] = m.Tentheloai;
-                        r["Ngày xuất bản"] = m.Ngayxuatban.ToString("dd-MM-yyyy");
+                        r["Ngày xuất bản"] = m.Ngayxuatban.ToString("MM-dd-yyyy");
                         r["Nhà xuất bản"] = m.Tennhaxuatban;
                         r["Số lượng"] = m.Soluong;
                         r["Đơn giá"] = m.Dongia;
@@ -224,12 +227,13 @@ namespace QuanLyCHSach.View
                         ms.Ten = tbTenSach.Text;
                         ms.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
                         ms.Tacgia = tbTacGia.Text;
-                        ms.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value.ToString("dd-MM-yyyy"));
+                        ms.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value);
                         ms.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
                         ms.Dongia = Convert.ToDouble(nudDonGia.Value);
                         ms.Soluong = Convert.ToInt32(nudSoLuong.Value);
                         cs.ThemSach(ms);
                         XoaDuLieuTabPageSach();
+                        editSach = false;
 
                         DataTable dts = cs.HienThiTatCaSach();
                         LoadDuLieuSach(dts);
@@ -245,35 +249,51 @@ namespace QuanLyCHSach.View
                     return;
                 }
             }
+            else
+            {
+                MessageBox.Show("Bạn cần nhập thông tin.");
+                return;
+
+            }
         }
 
+        bool editSach = false;
+
+        private void tbTenSach_KeyDown(object sender, KeyEventArgs e)
+        {
+            editSach = true;
+
+        }
         private void btSua_Click(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(tbIdSach.Text))
             {
                 try
                 {
-                    if (!cs.KiemTraSach(tbTenSach.Text))
+                    if (editSach)
                     {
-                        MSach mss = new MSach();
-                        mss.Id = int.Parse(tbIdSach.Text);
-                        mss.Ten = tbTenSach.Text;
-                        mss.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
-                        mss.Tacgia = tbTacGia.Text;
-                        mss.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value.ToString("dd-MM-yyyy"));
-                        mss.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
-                        mss.Dongia = Convert.ToDouble(nudDonGia.Value);
-                        mss.Soluong = Convert.ToInt32(nudSoLuong.Value);
-                        cs.CapNhatSach(mss, mss.Id);
+                        if (cs.KiemTraSach(tbTenSach.Text))
+                        {
+                            MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                            return;
+                        }
+                        
+                    }
 
-                        DataTable dts = cs.HienThiTatCaSach();
-                        LoadDuLieuSach(dts);
-                        XoaDuLieuTabPageSach();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
-                    }
+                    MSach mss = new MSach();
+                    mss.Id = int.Parse(tbIdSach.Text);
+                    mss.Ten = tbTenSach.Text;
+                    mss.Id_theloai = Convert.ToInt32(cbTheLoai.SelectedValue.ToString());
+                    mss.Tacgia = tbTacGia.Text;
+                    mss.Ngayxuatban = Convert.ToDateTime(dtpNgayXuatBan.Value);
+                    mss.Id_nhaxuatban = Convert.ToInt32(cbNhaXuatBan.SelectedValue.ToString());
+                    mss.Dongia = Convert.ToDouble(nudDonGia.Value);
+                    mss.Soluong = Convert.ToInt32(nudSoLuong.Value);
+                    cs.CapNhatSach(mss, mss.Id);
+
+                    DataTable dts = cs.HienThiTatCaSach();
+                    LoadDuLieuSach(dts);
+                    XoaDuLieuTabPageSach();
 
                 }
                 catch (Exception)
@@ -332,6 +352,7 @@ namespace QuanLyCHSach.View
         {
             try
             {
+                editSach = false;
 
                 dtgvSach.CurrentRow.Selected = true;
                 tbIdSach.Text = dtgvSach.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
@@ -348,11 +369,10 @@ namespace QuanLyCHSach.View
                 }
 
                 tbTacGia.Text = dtgvSach.Rows[e.RowIndex].Cells["Tác giả"].FormattedValue.ToString();
-
-                dtpNgayXuatBan.Value = Convert.ToDateTime(dtgvSach.Rows[e.RowIndex].Cells["Ngày xuất bản"].FormattedValue.ToString());
-
                 nudDonGia.Value = Convert.ToInt32(dtgvSach.Rows[e.RowIndex].Cells["Đơn giá"].FormattedValue.ToString());
                 nudSoLuong.Value = Convert.ToInt32(dtgvSach.Rows[e.RowIndex].Cells["Số lượng"].FormattedValue.ToString());
+                dtpNgayXuatBan.Value = Convert.ToDateTime((dtgvSach.Rows[e.RowIndex].Cells["Ngày xuất bản"].FormattedValue.ToString()));
+
             }
             catch (Exception)
             {
@@ -452,8 +472,20 @@ namespace QuanLyCHSach.View
                     return;
                 }
             }
+            else
+            {
+                MessageBox.Show("Bạn cần nhập thông tin.");
+                return;
+
+            }
         }
 
+        private void tbTenTheLoai_KeyDown(object sender, KeyEventArgs e)
+        {
+            editTheLoai = true;
+        }
+
+        bool editTheLoai = false;
         private void btSuaTheLoai_Click(object sender, EventArgs e)
         {
 
@@ -461,16 +493,20 @@ namespace QuanLyCHSach.View
             {
                 try
                 {
-                    if (!ctl.KiemTraTheLoai(tbTenTheLoai.Text))
+                    if (editTheLoai)
                     {
-                        ctl.CapNhatTheLoai(tbTenTheLoai.Text, int.Parse(tbIdTheLoai.Text));
-                        XoaDuLieuTabPageTheLoai();
-                        DataTable data = ctl.HienThiTatCaTheLoai();
-                        LoadDuLieuTheLoai(data);
-                    }
-                    else
-                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                        if (ctl.KiemTraTheLoai(tbTenTheLoai.Text))
+                        {
+                            MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                            return;
+                        }
 
+                    }
+                    ctl.CapNhatTheLoai(tbTenTheLoai.Text, int.Parse(tbIdTheLoai.Text));
+                    XoaDuLieuTabPageTheLoai();
+                    DataTable data = ctl.HienThiTatCaTheLoai();
+                    LoadDuLieuTheLoai(data);
+                    
                 }
                 catch (Exception)
                 {
@@ -515,7 +551,7 @@ namespace QuanLyCHSach.View
         {
             try
             {
-
+                editTheLoai = false;
                 dtgvTheLoai.CurrentRow.Selected = true;
                 tbIdTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
                 tbTenTheLoai.Text = dtgvTheLoai.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
@@ -602,7 +638,7 @@ namespace QuanLyCHSach.View
             {
                 try
                 {
-                    if (cnxb.KiemTraNXB(tbTenNhaXuatBan.Text))
+                    if (!cnxb.KiemTraNXB(tbTenNhaXuatBan.Text))
                     {
                         mnxb.Ten = tbTenNhaXuatBan.Text;
                         mnxb.Diachi = tbDiaChiNxb.Text;
@@ -621,27 +657,43 @@ namespace QuanLyCHSach.View
                     return;
                 }
             }
+            else
+            {
+                MessageBox.Show("Bạn cần nhập thông tin.");
+                return;
+
+            }
         }
 
+        private void tbTenNhaXuatBan_KeyDown(object sender, KeyEventArgs e)
+        {
+            editNXB = true;
+        }
+
+        bool editNXB = false;
         private void btSuaNhaXuatBan_Click(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(tbIdNhaXuatBan.Text))
             {
                 try
                 {
-                    if (!String.IsNullOrEmpty(tbTenNhaXuatBan.Text))
+                    if (editNXB)
                     {
-                        MNhaXuatBan mnxbb = new MNhaXuatBan();
-                        mnxbb.Ten = tbTenNhaXuatBan.Text;
-                        mnxbb.Diachi = tbDiaChiNxb.Text;
-                        cnxb.CapNhatNhaXuatBan(mnxbb, tbIdNhaXuatBan.Text);
-                        XoaDuLieuTabPageTheLoai();
+                        if (cnxb.KiemTraNXB(tbTenNhaXuatBan.Text))
+                        {
+                            MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                            return;
+                        }
 
-                        DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
-                        LoadDuLieuNXB(dtnxb);
                     }
-                    else
-                        MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
+                    MNhaXuatBan mnxbb = new MNhaXuatBan();
+                    mnxbb.Ten = tbTenNhaXuatBan.Text;
+                    mnxbb.Diachi = tbDiaChiNxb.Text;
+                    cnxb.CapNhatNhaXuatBan(mnxbb, tbIdNhaXuatBan.Text);
+                    XoaDuLieuTabPageTheLoai();
+
+                    DataTable dtnxb = cnxb.HienThiTatCaNhaXuatBan();
+                    LoadDuLieuNXB(dtnxb);
                 }
                 catch (Exception)
                 {
@@ -688,7 +740,7 @@ namespace QuanLyCHSach.View
         {
             try
             {
-
+                editNXB = false;
                 dtgvNhaXuatBan.CurrentRow.Selected = true;
                 tbIdNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
                 tbTenNhaXuatBan.Text = dtgvNhaXuatBan.Rows[e.RowIndex].Cells["Tên"].FormattedValue.ToString();
@@ -851,6 +903,12 @@ namespace QuanLyCHSach.View
                     MessageBox.Show("Dữ liệu đã tồn tại hoặc không hợp lệ.");
                     return;
                 }
+            }
+            else
+            {
+                MessageBox.Show("Bạn cần nhập thông tin.");
+                return;
+
             }
         }
 
@@ -1032,7 +1090,7 @@ namespace QuanLyCHSach.View
                         r["TT"] = tt.ToString();
                         r["Tên"] = m.Ten;
                         r["Địa Chỉ"] = m.Diachi;
-                        r["Ngày sinh"] = m.Ngaysinh.ToString("dd-MM-yyyy");
+                        r["Ngày sinh"] = m.Ngaysinh.ToString("MM-dd-yyyy");
                         r["Sđt"] = m.Sdt;
                         r["Chức vụ"] = m.Tenchucvu;
 
@@ -1061,7 +1119,7 @@ namespace QuanLyCHSach.View
                     mnv.Ten = tbTenNhanVien.Text;
                     mnv.Diachi = tbDiaChiNhanVien.Text;
                     mnv.Sdt = tbSdt.Text;
-                    mnv.Ngaysinh = Convert.ToDateTime(dtpNgaySinh.Value.ToString("dd-MM-yyyy"));
+                    mnv.Ngaysinh = Convert.ToDateTime(dtpNgaySinh.Value);
                     mnv.Id_chucvu = Convert.ToInt32(cbChucVu.SelectedValue.ToString());
                     cnv.ThemNhanVien(mnv);
                     XoaDuLieuTabPageNhanVien();
@@ -1074,6 +1132,12 @@ namespace QuanLyCHSach.View
                     return;
                 }
             }
+            else
+            {
+                MessageBox.Show("Bạn cần nhập thông tin.");
+                return;
+
+            }
         }
 
         private void btSuaNhanVien_Click(object sender, EventArgs e)
@@ -1085,7 +1149,7 @@ namespace QuanLyCHSach.View
                 mnv.Ten = tbTenNhanVien.Text;
                 mnv.Diachi = tbDiaChiNhanVien.Text;
                 mnv.Sdt = tbSdt.Text;
-                mnv.Ngaysinh = Convert.ToDateTime(dtpNgaySinh.Value.ToString("dd-MM-yyyy"));
+                mnv.Ngaysinh = Convert.ToDateTime(dtpNgaySinh.Value);
                 mnv.Id_chucvu = Convert.ToInt32(cbChucVu.SelectedValue.ToString());
                 cnv.CapNhatNhanVien(mnv, tbIdNhanVien.Text);
                 XoaDuLieuTabPageNhanVien();
@@ -1169,7 +1233,7 @@ namespace QuanLyCHSach.View
                     m.Id = int.Parse(r["id"].ToString());
                     m.Id_nhanvien = int.Parse(r["id_nhanvien"].ToString());
                     m.Tennhanvien = r["tennhanvien"].ToString();
-                    m.Ngaylap = Convert.ToDateTime(r["ngaylap"].ToString());
+                    m.Ngaylap = r["ngaylap"].ToString();
                     m.Tongtien = int.Parse(r["tongtien"].ToString());
                     lhd.Add(m);
                 }
@@ -1190,10 +1254,10 @@ namespace QuanLyCHSach.View
                         DataRow r = tb.NewRow();
                         r["Id"] = m.Id.ToString();
                         r["TT"] = tt.ToString();
-                        r["Ngày lập"] = m.Ngaylap.ToString("dd-MM-yyyy");
+                        r["Ngày lập"] = m.Ngaylap.ToString(/*"dd-MM-yyyy"*/);
                         r["Nhân viên"] = m.Tennhanvien;
                         r["Mã nhân viên"] = m.Id_nhanvien;
-                        r["Tổng tiền"] = m.Tongtien;
+                        r["Tổng tiền"] =  m.Tongtien;
 
                         tb.Rows.Add(r);
                     }
@@ -1225,13 +1289,19 @@ namespace QuanLyCHSach.View
             this.dtgvDoanhThu.DataSource = null;
             this.dtgvDoanhThu.Rows.Clear();
 
-            DataTable data =  chd.HienThiHoaDon(dtpTuNgay.Value, dtpDenNgay.Value);
+            DataTable data = chd.HienThiHoaDon(dtpTuNgay.Value, dtpDenNgay.Value);
             LoadDuLieuHoaDon(data);
+
+            if (data.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu hóa đơn.");
+            }
+
         }
 
         private void dtgvDoanhThu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            
             try
             {
                 dtgvDoanhThu.CurrentRow.Selected = true;
@@ -1246,9 +1316,8 @@ namespace QuanLyCHSach.View
             }
         }
 
-
         #endregion
 
-        
+       
     }
 }

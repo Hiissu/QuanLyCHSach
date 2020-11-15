@@ -69,8 +69,8 @@ namespace QuanLyCHSach.Controller
 
         public void ThemHoaDon(MHoaDon obj)
         {
-            string truyvan = $"INSERT INTO [dbo].[HoaDon]([ngaylap], [id_nhanvien]) " +
-                            $"VALUES ('{obj.Ngaylap}', '{obj.Id_nhanvien}')";
+            string truyvan = $"INSERT INTO [dbo].[HoaDon]([ngaylap], [id_nhanvien], [tongtien]) " +
+                            $"VALUES ('{obj.Ngaylap}', '{obj.Id_nhanvien}', {obj.Tongtien})";
                             
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;

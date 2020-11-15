@@ -127,6 +127,7 @@ namespace QuanLyCHSach
 
             }
         }
+        
         public void ThemSach(MSach obj)
         {
             string truyvan = $"INSERT INTO " +
@@ -147,13 +148,32 @@ namespace QuanLyCHSach
             }
         }
 
-
         public void CapNhatSach(MSach obj, object idSach)
         {
             string truyvan = $"UPDATE [dbo].[Sach] " +
                 $"SET [ten] = N'{obj.Ten}', [id_theloai] = '{obj.Id_theloai}',  [tacgia] = N'{obj.Tacgia}', [ngayxuatban] = '{obj.Ngayxuatban}', " + 
                     $"[id_nhaxuatban] = '{obj.Id_nhaxuatban}' , [soluong] = '{obj.Soluong}' , [dongia] = '{obj.Dongia}' " +
                 $"WHERE [id] = '{idSach}'";
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = truyvan;
+            try
+            {
+                base.GhiDuLieu(cmd);
+
+            }
+            catch (Exception)
+            {
+
+                return;
+            }
+        }
+
+        public void CapNhatSoLuongSach(MCTHD m)
+        {
+            string truyvan = $"UPDATE [dbo].[Sach] " +
+                    $"SET [soluong] = [soluong] - {m.Soluong} WHERE [id] = '{m.Id_sach}'";
 
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.Text;

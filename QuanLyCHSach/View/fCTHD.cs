@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,8 +48,8 @@ namespace QuanLyCHSach.View
                 tb.Columns.Add("Mã sách", typeof(String));
                 tb.Columns.Add("Tên sách", typeof(String));
                 tb.Columns.Add("Số lượng", typeof(int));
-                tb.Columns.Add("Đơn giá", typeof(int));
-                tb.Columns.Add("Thành tiền", typeof(int));
+                tb.Columns.Add("Đơn giá", typeof(string));
+                tb.Columns.Add("Thành tiền", typeof(string));
                 int tt = 0;
                 foreach (MCTHD m in lcthd)
                 {
@@ -59,8 +60,8 @@ namespace QuanLyCHSach.View
                     r["Mã sách"] = m.Ten_sach;
                     r["Tên sách"] = m.Ten_sach;
                     r["Số lượng"] = m.Soluong;
-                    r["Đơn giá"] = m.Dongia;
-                    r["Thành tiền"] = m.Thanhtien;
+                    r["Đơn giá"] = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", m.Dongia);
+                    r["Thành tiền"] = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", m.Thanhtien);
 
                     tb.Rows.Add(r);
                 }

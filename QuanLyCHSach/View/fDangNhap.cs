@@ -29,6 +29,7 @@ namespace QuanLyCHSach.View
                     fQuanLy f = new fQuanLy();
                     f.tenDangNhap = r["tendangnhap"].ToString();
                     f.tenNhanVien = r["tennhanvien"].ToString();
+                    f.idNhanVien = int.Parse(r["id_nhanvien"].ToString());
                     f.loaiTaiKhoan = Convert.ToBoolean(r["loaitaikhoan"].ToString());
                     this.Hide();
                     f.ShowDialog();

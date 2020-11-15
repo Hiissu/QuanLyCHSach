@@ -15,7 +15,7 @@ namespace QuanLyCHSach
             DataTable dtable = new DataTable();
             dtable = null;
 
-            string truyvan = $"SELECT tendangnhap, loaitaikhoan, nv.ten as tennhanvien FROM dbo.TaiKhoan as tk " +
+            string truyvan = $"SELECT tendangnhap, loaitaikhoan, nv.ten as tennhanvien, id_nhanvien FROM dbo.TaiKhoan as tk " +
                 $"INNER JOIN NhanVien as nv ON tk.id_nhanvien = nv.id " +
                 $"WHERE tendangnhap = '{tenDangNhap}' AND matkhau = '{matKhau}'";
 
